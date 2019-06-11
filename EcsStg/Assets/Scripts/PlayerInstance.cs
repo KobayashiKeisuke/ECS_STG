@@ -32,6 +32,7 @@ namespace GAME
             m_spawner = new BulletFactory(
                 m_bulletModel,
                 this.transform,
+                m_spawnCycle,
                 1.0f, Vector3.forward, 1
             );
         }

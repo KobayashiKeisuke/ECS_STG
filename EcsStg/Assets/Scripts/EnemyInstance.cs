@@ -34,16 +34,19 @@ namespace GAME
             m_spawners.Add( new BulletFactory(
                 m_bulletModel,
                 this.transform,
+                m_spawnCycle,
                 0.03f, new Vector3( -SQRT_TWO, 0f, -SQRT_TWO), 1
             ));
             m_spawners.Add( new BulletFactory(
                 m_bulletModel,
                 this.transform,
+                m_spawnCycle,
                 0.03f, Vector3.back, 1
             ));
             m_spawners.Add( new BulletFactory(
                 m_bulletModel,
                 this.transform,
+                m_spawnCycle,
                 0.03f, new Vector3( SQRT_TWO, 0f, -SQRT_TWO), 1
             ));
         }

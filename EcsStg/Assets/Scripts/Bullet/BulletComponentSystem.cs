@@ -10,33 +10,31 @@ using Random = Unity.Mathematics.Random;
 
 using GAME.Entity;
 
-// public class BulletComponentSystem : ComponentSystem
-// {
-//     protected override void OnUpdate()
-//     {
-//         // Entities.ForEach( this.UpdateTransform );
-//         Entities.ForEach( (ref BulletData _bullet, ref Translation _pos)=>
-//         {
-//             _pos.Value += _bullet.Direction.Value * _bullet.Speed;
-//         });
-//     }
-
-//     void UpdateTransform( ref BulletData _bullet, ref Translation _pos)
-//     {
-//         _pos.Value += _bullet.Direction.Value * _bullet.Speed;
-//     }
-// }
-
 public class BulletMoveSystem : JobComponentSystem
 {
+    const float X_RANGE = 20.0f;
+    const float Y_RANGE = 20.0f;
+    const float Z_RANGE = 20.0f;
+
     // Use the [BurstCompile] attribute to compile a job with Burst. You may see significant speed ups, so try it!
     [BurstCompile]
     struct BulletMoveJob : IJobForEach<Translation, BulletData>
     {
-        // The [ReadOnly] attribute tells the job scheduler that this job will not write to rotSpeedSpawnAndRemove
-        public void Execute(ref Translation _pos, [ReadOnly] ref BulletData _bullet)
+        public void Execute(ref Translation _pos, ref BulletData _bullet)
         {
-             _pos.Value += _bullet.Direction.Value * _bullet.Speed;
+            if( _bullet.IsInitialized )
+            {
+                _pos.Value += _bullet.Direction.Value * _bullet.Speed;
+            }
+            // 範囲内なら特になにもしない
+            if( -X_RANGE < _pos.Value.x && _pos.Value.x < X_RANGE
+            && -Y_RANGE < _pos.Value.y && _pos.Value.y < Y_RANGE
+            && -Z_RANGE < _pos.Value.z && _pos.Value.z < Z_RANGE
+            )
+            {
+                return;
+            }
+            _bullet.IsInitialized = false;
         }
     }
 
@@ -51,6 +49,7 @@ public class BulletMoveSystem : JobComponentSystem
     }
 }
 
+/*
 public class ObjectDestroySystem : JobComponentSystem
 {
     const float X_RANGE = 20.0f;
@@ -67,7 +66,7 @@ public class ObjectDestroySystem : JobComponentSystem
     // Use the [BurstCompile] attribute to compile a job with Burst.
     // You may see significant speed ups, so try it!
     [BurstCompile]
-    struct BulletDestroyJob : IJobForEachWithEntity< Translation>
+    struct BulletDestroyJob : IJobForEachWithEntity<Translation>
     {
         [WriteOnly]
         public EntityCommandBuffer.Concurrent CommandBuffer;
@@ -82,6 +81,7 @@ public class ObjectDestroySystem : JobComponentSystem
             {
                 return;
             }
+            
             CommandBuffer.DestroyEntity(jobIndex, entity);
         }
     }
@@ -101,4 +101,4 @@ public class ObjectDestroySystem : JobComponentSystem
 
         return job;
     }
-}
+}*/

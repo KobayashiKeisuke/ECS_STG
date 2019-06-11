@@ -10,6 +10,9 @@ namespace GAME.Entity
     public struct BulletData : IComponentData
     {
         /// <summary> 弾の移動速度 </summary>
+        public bool IsInitialized;
+
+        /// <summary> 弾の移動速度 </summary>
         public float Speed;
 
         /// <summary> 弾の移動方向 </summary>
