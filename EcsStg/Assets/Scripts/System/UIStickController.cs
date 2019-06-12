@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 namespace GAME.UI
 {
     public class UIStickController : MonoBehaviour
@@ -47,14 +43,8 @@ namespace GAME.UI
         [Header("オブジェクト")]
         [SerializeField, Tooltip("親SpriteObject")]
         private Transform m_baseSpriteTrans;
-        #if UNITY_EDITOR
-        public Transform BaseSpriteTrans => m_baseSpriteTrans;
-        #endif
         [SerializeField, Tooltip("子SpriteObject")]
         private Transform m_stickSpriteTrans;
-        #if UNITY_EDITOR
-        public Transform StickSpriteTrans => m_stickSpriteTrans;
-        #endif
 
 
         /// <summary> Base の可動域 </summary>
@@ -69,14 +59,8 @@ namespace GAME.UI
 
         /// <summary> Base 画像の設定 </summary>
         SpriteParam m_baseSpriteParam;
-        #if UNITY_EDITOR
-        public SpriteParam BaseSpriteParam => m_baseSpriteParam;
-        #endif
         /// <summary> Sticker 画像の設定 </summary>
         SpriteParam m_stickerSpriteParam;
-        #if UNITY_EDITOR
-        public SpriteParam StickerSpriteParam => m_stickerSpriteParam;
-        #endif
 
         /// <summary> Base 画像の半径 </summary>
         public float BaseSpriteRadius => m_baseSpriteParam.Radius;
@@ -93,6 +77,7 @@ namespace GAME.UI
 
         Camera m_mainCamera;
         Camera MainCam => m_mainCamera;
+
         #endregion //) ===== MEMBER_VARIABLES =====
 
         //------------------------------------------
@@ -118,8 +103,8 @@ namespace GAME.UI
             // Base の可動域の設定
             m_baseMoveRange_X.x = MainCam.ScreenToWorldPoint(new Vector3(0f, 0f, 0f) ).x + BaseSpriteRadius;
             m_baseMoveRange_X.y = MainCam.ScreenToWorldPoint(new Vector3(Screen.width, 0f, 0f) ).x  - BaseSpriteRadius;
-            m_baseMoveRange_Y.y = MainCam.ScreenToWorldPoint(new Vector3(0, 0f, 0f) ).y - BaseSpriteRadius;
-            m_baseMoveRange_Y.x = MainCam.ScreenToWorldPoint(new Vector3(0f, Screen.height, 0f) ).y + BaseSpriteRadius;
+            m_baseMoveRange_Y.x = MainCam.ScreenToWorldPoint(new Vector3(0f, Screen.height, 0f) ).y - BaseSpriteRadius;
+            m_baseMoveRange_Y.y = MainCam.ScreenToWorldPoint(new Vector3(0, 0f, 0f) ).y + BaseSpriteRadius;
 
             // Stick の可動域
             m_stickMoveRange = (BaseSpriteRadius - m_stickerSpriteParam.Radius);// Radius
@@ -145,14 +130,10 @@ namespace GAME.UI
             {
                 return;
             }
-            Debug.Log($"Screen:{_screenPos}, ViewDiff:{_diffVector}, Time:{_currentTime}, dt:{_deltaTime}");
-
-            Debug.Log($"Base:{m_baseSpriteTrans.position} Stick:{m_stickSpriteTrans.position}");
             // World 座標系で表現
             Vector3 nextStickPosition = MainCam.ScreenToWorldPoint(new Vector3(_screenPos.x * Screen.width, _screenPos.y* Screen.height, 0f) );
             nextStickPosition.z = m_stickSpriteTrans.position.z;
-            Vector3 diffPos = m_baseSpriteTrans.position - nextStickPosition;
-            Debug.Log($"NextStickPos:{nextStickPosition} diffPos:{diffPos} DiffRange:{diffPos.magnitude} ( {diffPos.sqrMagnitude} < {BaseSpriteSqrRange})");
+            Vector3 diffPos = nextStickPosition - m_baseSpriteTrans.position;
             // Stickerが範囲内なら普通にUIを動かす
             if( diffPos.sqrMagnitude < m_stickMoveRange * m_stickMoveRange)
             {
@@ -162,12 +143,11 @@ namespace GAME.UI
             }
 
             // MoveRange 外ならとりあえず目一杯外まで動かす
-            float theta = Mathf.Atan2( diffPos.y, diffPos.x );
+            float theta = Mathf.Atan2( diffPos.y , diffPos.x );
             float cosT = Mathf.Cos( theta );
             float sinT = Mathf.Sin( theta );
-            Debug.LogWarning($"[Stick] theta:{theta*Mathf.Rad2Deg}\nX:{BasePosition_X}->{BasePosition_X} + {BaseSpriteRadius * cosT}\nY:{BasePosition_Y}->{BasePosition_Y} - {BaseSpriteRadius * sinT}\n");
-            nextStickPosition.x = BasePosition_X + BaseSpriteRadius * cosT;
-            nextStickPosition.y = BasePosition_Y - BaseSpriteRadius * sinT;
+            nextStickPosition.x = BasePosition_X + m_stickMoveRange * cosT;
+            nextStickPosition.y = BasePosition_Y + m_stickMoveRange * sinT;
             m_stickSpriteTrans.position = nextStickPosition;
 
             // m_stickMoveRange ~ BaseSpriteRadius ならまだBaseは維持
@@ -179,66 +159,10 @@ namespace GAME.UI
             // 範囲外なので最大限までStick位置は保持して、Baseを現在地点の方向へ可能な限り近づける
             float diffRange = diffPos.magnitude - BaseSpriteRadius;
             Vector3 nextBasePos = m_baseSpriteTrans.position;
-            Debug.LogError($"[Base] X:{BasePosition_X}->{BasePosition_X} + {diffRange * cosT}\nY:{BasePosition_Y}->{BasePosition_Y} - {diffRange * sinT}\n");
             nextBasePos.x = Mathf.Clamp( BasePosition_X + diffRange * cosT, m_baseMoveRange_X.x, m_baseMoveRange_X.y);
-            nextBasePos.y = Mathf.Clamp( BasePosition_Y - diffRange * sinT, m_baseMoveRange_Y.x, m_baseMoveRange_Y.y);
+            nextBasePos.y = Mathf.Clamp( BasePosition_Y + diffRange * sinT, m_baseMoveRange_Y.y, m_baseMoveRange_Y.x);
 
             m_baseSpriteTrans.position = nextBasePos;
         }
     }
-
-
-    #if UNITY_EDITOR
-    [CustomEditor(typeof(UIStickController))]
-    public class UIStickControllerEditor : UnityEditor.Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-
-            var ctrl = target as UIStickController;
-            EditorGUILayout.LabelField("Base Sprite");
-            {
-                EditorGUI.indentLevel++;
-                EditorGUILayout.Vector3Field( "World Pos", ctrl.BaseSpriteTrans.position);
-                EditorGUILayout.Vector3Field( "Local Pos", ctrl.BaseSpriteTrans.localPosition);
-                EditorGUILayout.FloatField("Radius", ctrl.BaseSpriteParam.Radius);
-                EditorGUILayout.FloatField("Pixel/Unit", ctrl.BaseSpriteParam.PixelPerUnit);
-
-                EditorGUILayout.LabelField("Move Range");
-                {
-                    EditorGUI.indentLevel++;
-                    EditorGUILayout.BeginHorizontal();
-                    {
-                        EditorGUILayout.FloatField( "X", ctrl.BaseMoveRange_X.x);   EditorGUILayout.FloatField(  ctrl.BaseMoveRange_X.y);
-                    }
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.BeginHorizontal();
-                    {
-                        EditorGUILayout.FloatField( "Y", ctrl.BaseMoveRange_Y.x);   EditorGUILayout.FloatField(  ctrl.BaseMoveRange_Y.y);
-                    }
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUI.indentLevel--;
-                }
-
-                EditorGUI.indentLevel--;
-            }
-
-            EditorGUILayout.LabelField("Sticker Sprite");
-            {
-                EditorGUI.indentLevel++;
-                EditorGUILayout.FloatField("Movable Range", ctrl.StickMoveRange);
-
-                EditorGUILayout.Vector3Field( "World Pos", ctrl.StickSpriteTrans.position);
-                EditorGUILayout.Vector3Field( "Local Pos", ctrl.StickSpriteTrans.localPosition);
-                EditorGUILayout.FloatField("Radius", ctrl.StickerSpriteParam.Radius);
-                EditorGUILayout.FloatField("Pixel/Unit", ctrl.StickerSpriteParam.PixelPerUnit);
-                EditorGUI.indentLevel--;
-            }
-
-
-
-        }
-    }
-    #endif
 }

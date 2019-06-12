@@ -45,7 +45,6 @@ public class InputSystem : MonoBehaviour
             m_screenPosition.x = value.x / Screen.width;
             m_screenPosition.y = value.y / Screen.height;
 
-            Debug.Log($"[{this.GetType()}] Viewport:{m_screenPosition}, ScreenPos:{value},ScreenPos:({Screen.width}, {Screen.height}) ");
             if( m_onPressed )
             {
                 m_onDragEvent?.Invoke( m_screenPosition, m_screenPosition - m_prevScreenPos, t, t - m_prevTime );
