@@ -565,6 +565,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -655,8 +656,20 @@ MonoBehaviour:
     Position: {x: 0, y: 0, z: -10}
     Rotation: {x: 0, y: 0, z: 0}
   m_y_angleParam:
-    Position: {x: 0, y: 10, z: -5}
+    Position: {x: 0, y: 40, z: -5}
     Rotation: {x: 90, y: 0, z: 0}
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e5b44690c88944298a1b1b7cb7736c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1857900463
 GameObject:
   m_ObjectHideFlags: 0

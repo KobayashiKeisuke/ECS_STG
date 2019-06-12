@@ -29,12 +29,19 @@ namespace GAME
                 GameObject.Instantiate( m_playerModel, this.transform );
             }
 
-            m_spawner = new BulletFactory(
-                m_bulletModel,
-                this.transform,
-                m_spawnCycle,
-                1.0f, Vector3.forward, 1
-            );
+            m_spawner = new BulletFactory( new BulletFactory.InitParameter()
+            {
+                    BulletPrefab    = m_bulletModel,
+                    ParentObject    = this.transform,
+                    PositionOffset  = Vector3.zero,
+                    RotationOffset  = Vector3.zero,
+                    ScreenSize      = new Vector2( GameConst.SCREE_WIDTH, GameConst.SCREE_HEIGHT),
+                    SpawnCycle      = m_spawnCycle,
+
+                    Speed           = 0.3f,
+                    MoveDirection   = Vector3.forward,
+                    Damage          = 1,
+            });
         }
 
         // Update is called once per frame

@@ -12,9 +12,13 @@ namespace GAME
         private GameObject m_playerModel = null;
         [SerializeField]
         private GameObject m_bulletModel = null;
+        [SerializeField]
+        private int m_nway = 3;
+        [SerializeField, Range( 0f, 360f)]
+        private float m_angle = 180f;
 
         /// <summary> 弾生成器 </summary>
-        private List<ISpawner> m_spawners;
+        private ISpawner m_spawner;
 
         [SerializeField, Range(0.1f, 5.0f)]
         private float m_spawnCycle = 1.0f;
@@ -30,25 +34,21 @@ namespace GAME
             {
                 GameObject.Instantiate( m_playerModel, this.transform );
             }
-            m_spawners = new List<ISpawner>();
-            m_spawners.Add( new BulletFactory(
-                m_bulletModel,
-                this.transform,
-                m_spawnCycle,
-                0.03f, new Vector3( -SQRT_TWO, 0f, -SQRT_TWO), 1
-            ));
-            m_spawners.Add( new BulletFactory(
-                m_bulletModel,
-                this.transform,
-                m_spawnCycle,
-                0.03f, Vector3.back, 1
-            ));
-            m_spawners.Add( new BulletFactory(
-                m_bulletModel,
-                this.transform,
-                m_spawnCycle,
-                0.03f, new Vector3( SQRT_TWO, 0f, -SQRT_TWO), 1
-            ));
+            m_spawner = new NwayBulletFactory( new NwayBulletFactory.InitParameter(){
+                BulletPrefab    = m_bulletModel,
+                ParentObject    = this.transform,
+                PositionOffset  = Vector3.zero,
+                RotationOffset  = Vector3.zero,
+                ScreenSize      = new Vector2( GameConst.SCREE_WIDTH, GameConst.SCREE_HEIGHT),
+                SpawnCycle      = m_spawnCycle,
+
+                Speed           = 0.03f,
+                MoveDirection   = Vector3.back,
+                Damage          = 1,
+
+                NwayCount       = m_nway,
+                Angle           = m_angle,
+            });
         }
 
         // Update is called once per frame
@@ -58,10 +58,7 @@ namespace GAME
             if( m_spawnTimer < 0 )
             {
                 m_spawnTimer = m_spawnCycle;
-                foreach (var item in m_spawners)
-                {
-                    item?.Spawn();
-                }
+                m_spawner.Spawn();
             }
         }
     }
