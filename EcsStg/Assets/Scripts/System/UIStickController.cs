@@ -78,6 +78,9 @@ namespace GAME.UI
         Camera m_mainCamera;
         Camera MainCam => m_mainCamera;
 
+        IPlayerMove m_playerMove;
+        IPlayerMove PlayerMove => m_playerMove;
+
         #endregion //) ===== MEMBER_VARIABLES =====
 
         //------------------------------------------
@@ -89,9 +92,10 @@ namespace GAME.UI
         /// World 座標系で座標を扱うので注意!!
         /// </summary>
         /// <param name="_sys"></param>
-        public void Initialize(InputSystem _sys, Camera _mainCam )
+        public void Initialize(InputSystem _sys, Camera _mainCam, IPlayerMove _playerMove )
         {
             m_mainCamera = _mainCam;
+            m_playerMove = _playerMove;
 
             Sprite baseSprite                   = m_baseSpriteTrans.GetComponent<SpriteRenderer>().sprite;
             m_baseSpriteParam.PixelPerUnit      = baseSprite.pixelsPerUnit;
@@ -134,16 +138,22 @@ namespace GAME.UI
             Vector3 nextStickPosition = MainCam.ScreenToWorldPoint(new Vector3(_screenPos.x * Screen.width, _screenPos.y* Screen.height, 0f) );
             nextStickPosition.z = m_stickSpriteTrans.position.z;
             Vector3 diffPos = nextStickPosition - m_baseSpriteTrans.position;
+            float theta = Mathf.Atan2( diffPos.y , diffPos.x );
+
+
             // Stickerが範囲内なら普通にUIを動かす
             if( diffPos.sqrMagnitude < m_stickMoveRange * m_stickMoveRange)
             {
                 // Sprite 設定に合わせる
                 m_stickSpriteTrans.position = nextStickPosition;
+                // イベント発行
+                PlayerMove?.OnMove( diffPos.sqrMagnitude /m_stickMoveRange / m_stickMoveRange, theta );
                 return;
             }
+            // イベント発行( 最大レンジで移動 )
+            PlayerMove?.OnMove( 1.0f, theta );
 
             // MoveRange 外ならとりあえず目一杯外まで動かす
-            float theta = Mathf.Atan2( diffPos.y , diffPos.x );
             float cosT = Mathf.Cos( theta );
             float sinT = Mathf.Sin( theta );
             nextStickPosition.x = BasePosition_X + m_stickMoveRange * cosT;

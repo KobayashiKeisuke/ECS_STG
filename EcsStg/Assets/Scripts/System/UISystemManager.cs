@@ -13,12 +13,14 @@ namespace GAME.UI
         private Camera m_uiCamera;
         [SerializeField]
         private UIStickController m_stickCtrl;
+        [SerializeField]
+        private PlayerInstance m_player;
 
         protected override void Init()
         {
             base.Init();
 
-            m_stickCtrl?.Initialize( m_inputSystem, m_uiCamera);
+            m_stickCtrl?.Initialize( m_inputSystem, m_uiCamera, m_player.MoveSys);
         }
     }
 }

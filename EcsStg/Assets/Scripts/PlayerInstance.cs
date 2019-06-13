@@ -10,6 +10,9 @@ namespace GAME
         private GameObject m_playerModel = null;
         [SerializeField]
         private GameObject m_bulletModel = null;
+        [SerializeField]
+        private PlayerMoveSystem m_moveSys = null;
+        public PlayerMoveSystem MoveSys => m_moveSys;
 
         /// <summary> 弾生成器 </summary>
         private ISpawner m_spawner;
@@ -24,15 +27,17 @@ namespace GAME
             Debug.Assert( m_playerModel != null );
             Debug.Assert( m_bulletModel != null );
 
+            Transform playerModelTrans = this.transform;
             if( m_playerModel != null )
             {
-                GameObject.Instantiate( m_playerModel, this.transform );
+                GameObject go = GameObject.Instantiate( m_playerModel, this.transform );
+                playerModelTrans = go.transform;
             }
 
             m_spawner = new BulletFactory( new BulletFactory.InitParameter()
             {
                     BulletPrefab    = m_bulletModel,
-                    ParentObject    = this.transform,
+                    ParentObject    = playerModelTrans,
                     PositionOffset  = Vector3.zero,
                     RotationOffset  = Vector3.zero,
                     ScreenSize      = new Vector2( GameConst.SCREE_WIDTH, GameConst.SCREE_HEIGHT),
@@ -42,6 +47,10 @@ namespace GAME
                     MoveDirection   = Vector3.forward,
                     Damage          = 1,
             });
+            MoveSys?.Initialize( new PlayerMoveSystem.InitParameter(){
+                MoveTarget = playerModelTrans,
+                MainCamera = Camera.main,
+            } );
         }
 
         // Update is called once per frame

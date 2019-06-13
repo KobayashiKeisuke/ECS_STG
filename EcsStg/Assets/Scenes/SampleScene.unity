@@ -691,6 +691,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Mouse Input
       m_Flags: 0
+    - m_Name: 
+      m_Id: 7cd9b9ef-99b6-4002-90e9-e9074772e74c
+      m_Path: 
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Mouse Input
+      m_Flags: 0
   DragStart:
     m_Name: Drag Start
     m_ExpectedControlLayout: 
@@ -768,6 +776,7 @@ MonoBehaviour:
   m_inputSystem: {fileID: 822595548}
   m_uiCamera: {fileID: 597145683}
   m_stickCtrl: {fileID: 1410455770}
+  m_player: {fileID: 1899148327}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,13 +855,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 40, z: 0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -860,7 +869,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f3defa27b04594294b9998189758e9a1, type: 3}
   m_Name: 
@@ -1102,6 +1111,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1899148326 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 728913765880132133, guid: f5fdb2fe55acb45b1a016b5885fe8e40,
+    type: 3}
+  m_PrefabInstance: {fileID: 8993649717684973592}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1899148327 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9122013314011303786, guid: f5fdb2fe55acb45b1a016b5885fe8e40,
+    type: 3}
+  m_PrefabInstance: {fileID: 8993649717684973592}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899148326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec895c32e034c4f9181817af7dd01f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1899148328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899148326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3032d7eb937a4c7f8498d9f84cd4c79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_maxMoveSpeed: 5
+  m_cameraDistance: 40
 --- !u!1 &2116404819
 GameObject:
   m_ObjectHideFlags: 0
@@ -1339,6 +1380,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9122013314011303786, guid: f5fdb2fe55acb45b1a016b5885fe8e40,
+        type: 3}
+      propertyPath: m_moveSys
+      value: 
+      objectReference: {fileID: 1899148328}
     m_RemovedComponents:
     - {fileID: 2766113961566899451, guid: f5fdb2fe55acb45b1a016b5885fe8e40, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f5fdb2fe55acb45b1a016b5885fe8e40, type: 3}
