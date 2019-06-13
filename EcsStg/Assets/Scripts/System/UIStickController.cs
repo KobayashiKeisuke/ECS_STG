@@ -13,13 +13,14 @@ namespace GAME.UI
         #region ===== CONSTS =====
 
         /// <summary> 初期化パラメータ </summary>
-        public class InitParameter : BulletFactory.InitParameter
+        public class InitParameter
         {
-            /// <summary> Nway数 </summary>
-            public int NwayCount = 1;
-
-            /// <summary> バレット発射角度 </summary>
-            public float Angle = 180f;
+            /// <summary> 初期化パラメータ </summary>
+            public InputSystem InputSys;
+            /// <summary> 初期化パラメータ </summary>
+            public Camera MainCam;
+            /// <summary> 初期化パラメータ </summary>
+            public IPlayerMove PlayerMove;
         }
 
         public struct SpriteParam
@@ -113,11 +114,22 @@ namespace GAME.UI
             // Stick の可動域
             m_stickMoveRange = (BaseSpriteRadius - m_stickerSpriteParam.Radius);// Radius
 
+            _sys.AddOnDragStartEvent( this.OnDragStart );
             _sys.AddOnDragEvent( this.OnDrag );
+            _sys.AddOnDragEndEvent( this.OnDragEnd );
 
+            HideUI();
         }
         
         #endregion //) ===== INITIALIZE =====
+
+        /// <summary>
+        /// Stick位置の初期化
+        /// </summary>
+        private void ResetStickPosition()
+        {
+            m_stickSpriteTrans.localPosition = Vector3.zero;
+        }
 
         /// <summary>
         /// Mouse 移動イベント
@@ -173,6 +185,31 @@ namespace GAME.UI
             nextBasePos.y = Mathf.Clamp( BasePosition_Y + diffRange * sinT, m_baseMoveRange_Y.y, m_baseMoveRange_Y.x);
 
             m_baseSpriteTrans.position = nextBasePos;
+        }
+
+        private void OnDragStart( float _time )
+        {
+            ShowUI();
+        }
+
+        private void OnDragEnd( float _time )
+        {
+            ResetStickPosition();
+            // イベント発行
+            PlayerMove?.OnMove( 0f, 0f );
+            HideUI();
+        }
+
+
+
+        void ShowUI(){ SwitchUIActivation( true );}
+        void HideUI(){ SwitchUIActivation( false );}
+        private void SwitchUIActivation( bool _isActive )
+        {
+            if( m_baseSpriteTrans.gameObject.activeInHierarchy != _isActive )
+            {
+                m_baseSpriteTrans.gameObject.SetActive( _isActive );
+            }
         }
     }
 }

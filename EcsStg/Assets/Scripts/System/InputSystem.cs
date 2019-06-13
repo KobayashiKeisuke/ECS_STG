@@ -33,33 +33,52 @@ public class InputSystem : MonoBehaviour
 
     /// <summary> ScreenPosition, diffVec Time.realTime, deltaTime </summary>
     System.Action<Vector2, Vector2, float, float> m_onDragEvent = null;
+    /// <summary> Time.realTime,  </summary>
+    System.Action<float> m_onDragStartEvent = null;
+    /// <summary> Time.realTime,  </summary>
+    System.Action<float> m_onDragEndEvent = null;
 
     bool m_onPressed = false;
 
     private void Awake()
     {
-        mouseInput.performed += _ =>
-        {
-            var value = _.ReadValue<Vector2>();
-            float t = (float)_.time;
-            m_screenPosition.x = value.x / Screen.width;
-            m_screenPosition.y = value.y / Screen.height;
-
-            if( m_onPressed )
-            {
-                m_onDragEvent?.Invoke( m_screenPosition, m_screenPosition - m_prevScreenPos, t, t - m_prevTime );
-            }
-
-            m_prevTime = t;
-            m_prevScreenPos = m_screenPosition;
-        };
-
-        DragStart.performed += _ =>{ m_onPressed = true; m_prevTime = (float)_.time; };
-        DragEnd.performed += _ =>{ m_onPressed = false; };
-
+        DragStart.performed += this.OnDragStart;
+        mouseInput.performed += this.OnDrag;
+        DragEnd.performed += this.OnDragEnd;
     }
 
+    private void OnDragStart(InputAction.CallbackContext _context )
+    {
+        m_onPressed = true;
+        float t = (float)_context.time;
+        m_onDragStartEvent?.Invoke( t );
+    }
+    private void OnDrag(InputAction.CallbackContext _context )
+    {
+        var value = _context.ReadValue<Vector2>();
+        float t = (float)_context.time;
+        m_screenPosition.x = value.x / Screen.width;
+        m_screenPosition.y = value.y / Screen.height;
 
+        if( m_onPressed )
+        {
+            m_onDragEvent?.Invoke( m_screenPosition, m_screenPosition - m_prevScreenPos, t, t - m_prevTime );
+        }
+
+        m_prevTime = t;
+        m_prevScreenPos = m_screenPosition;
+    }
+    private void OnDragEnd(InputAction.CallbackContext _context )
+    {
+        m_onPressed = false;
+        float t = (float)_context.time;
+        m_onDragEndEvent?.Invoke( t );
+    }
+
+    public void AddOnDragStartEvent(  System.Action<float> e){ m_onDragStartEvent += e; }
+    public void RemoveOnDragStartEvent(  System.Action<float> e){ m_onDragStartEvent -= e; }
     public void AddOnDragEvent(  System.Action<Vector2, Vector2, float, float> e){ m_onDragEvent += e; }
     public void RemoveOnDragEvent(  System.Action<Vector2, Vector2, float, float> e){ m_onDragEvent -= e; }
+    public void AddOnDragEndEvent(  System.Action<float> e){ m_onDragEndEvent += e; }
+    public void RemoveOnDragEndEvent(  System.Action<float> e){ m_onDragEndEvent -= e; }
 }
