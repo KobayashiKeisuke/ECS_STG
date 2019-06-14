@@ -15,11 +15,17 @@ public class BulletMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
         Translation t = new Translation();
         t.Value = new float3(0f, 0f, -0.03f);
 
-        var data = new BulletData(){
-            Speed = 1.0f,
-            Direction = t,
+        var bulletData = new BulletData()
+        {
             Damage = 1,
         };
-        dstManager.AddComponentData(_entity, data);
+        var moveData = new ObjectMoveData()
+        {
+            Speed = 1.0f,
+            Direction = t,
+        };
+
+        dstManager.AddComponentData(_entity, bulletData);
+        dstManager.AddComponentData(_entity, moveData);
     }
 }

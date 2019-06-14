@@ -38,6 +38,15 @@ namespace GAME
             /// <summary> バレットのダメージ量 </summary>
             public int Damage;
         }
+
+        /// <summary>
+        /// バレット生成時の初期化パラメータまとめ
+        /// </summary>
+        protected struct InitData
+        {
+            public ObjectMoveData   MoveInitInfo;
+            public BulletData       BulletInitInfo;
+        }
         #endregion //)===== CONSTS =====
 
         //------------------------------------------
@@ -54,8 +63,8 @@ namespace GAME
         public bool IsInitialized => m_isInitialized;
 
         /// <summary> Bullet の初期値 </summary>
-        BulletData m_initData;
-        protected BulletData BulletInitData => m_initData;
+        InitData m_initData;
+        protected InitData InitInfo => m_initData;
 
         /// <summary> Bullet の初期生成位置 </summary>
         Transform m_initSpawnPos;
@@ -91,12 +100,19 @@ namespace GAME
         protected void SetParentObject( Transform _parent ){ m_initSpawnPos = _parent; }
         protected void SetBulletInitParam( InitParameter _param )
         {
-            m_initData = new BulletData()
+
+            m_initData = new InitData()
             {
-                IsInitialized = true,
-                Speed = _param.Speed,
-                Direction = new Translation{ Value = new float3(_param.MoveDirection.x, _param.MoveDirection.y, _param.MoveDirection.z) },
-                Damage = _param.Damage,
+                BulletInitInfo = new BulletData()
+                {
+                    IsInitialized = true,
+                    Damage = _param.Damage,
+                },
+                MoveInitInfo = new ObjectMoveData()
+                {
+                    Speed = _param.Speed,
+                    Direction = new Translation{ Value = new float3(_param.MoveDirection.x, _param.MoveDirection.y, _param.MoveDirection.z) },
+                },
             };
         }
 
@@ -126,6 +142,7 @@ namespace GAME
                 var instance = entityManager.Instantiate( prefab );
                 entityManager.SetComponentData(instance, new Translation {Value = new float3(INIT_POS,INIT_POS,INIT_POS)});
                 entityManager.SetComponentData<BulletData>( instance, new BulletData(){IsInitialized = false} );
+                entityManager.SetComponentData<ObjectMoveData>( instance, new ObjectMoveData(){} );
 
                 m_entities[i] = instance;
             }
@@ -143,11 +160,13 @@ namespace GAME
 
             for (int i = 0; i < m_entities.Length; i++)
             {
-                BulletData data = entityManager.GetComponentData<BulletData>( m_entities[i]);
-                if( !data.IsInitialized )
+                BulletData bulletInfo = entityManager.GetComponentData<BulletData>( m_entities[i]);
+                if( !bulletInfo.IsInitialized )
                 {
+                    ObjectMoveData moveData = entityManager.GetComponentData<ObjectMoveData>( m_entities[i]);
                     entityManager.SetComponentData(m_entities[i], new Translation{Value = new float3(currentPos.x, currentPos.y, currentPos.z)});
-                    entityManager.SetComponentData<BulletData>( m_entities[i], m_initData);
+                    entityManager.SetComponentData<ObjectMoveData>( m_entities[i], InitInfo.MoveInitInfo );
+                    entityManager.SetComponentData<BulletData>( m_entities[i], InitInfo.BulletInitInfo);
                     break;
                 }
             }
