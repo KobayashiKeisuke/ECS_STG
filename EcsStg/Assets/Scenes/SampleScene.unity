@@ -670,13 +670,13 @@ MonoBehaviour:
   mouseInput:
     m_Name: Mouse Input
     m_ExpectedControlLayout: 
-    m_Id: fe58a0e8-b28c-4266-b75d-042bf7517cde
+    m_Id: 80274750-925e-4d9c-b0a4-47560a0ef336
     m_Flags: 0
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: cab5d90f-b30a-4f4f-b4df-3bae9dbe5408
+      m_Id: 4f306a44-9f87-4e70-8d23-53a141bf3641
       m_Path: <Mouse>/position
       m_Interactions: 
       m_Processors: 
@@ -684,16 +684,8 @@ MonoBehaviour:
       m_Action: Mouse Input
       m_Flags: 0
     - m_Name: 
-      m_Id: 32c341c0-91f2-4ddb-8ea9-0e375acf726d
-      m_Path: <Touchscreen>/touch/position
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Mouse Input
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 7cd9b9ef-99b6-4002-90e9-e9074772e74c
-      m_Path: 
+      m_Id: fa9555ab-2af5-4b5e-aacf-ffd9f04defaf
+      m_Path: <Touchscreen>/position
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -702,13 +694,13 @@ MonoBehaviour:
   DragStart:
     m_Name: Drag Start
     m_ExpectedControlLayout: 
-    m_Id: 83e55d2b-605c-4c1f-bca7-118a85fdc08b
+    m_Id: e723d5ab-c78b-4f6f-ae7b-435e2b1c4850
     m_Flags: 0
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 3a4970fa-f044-47f7-92ad-669f9231ac0d
+      m_Id: 2bd03897-a46e-4165-b74b-5a397746bdc6
       m_Path: <Mouse>/button
       m_Interactions: Press
       m_Processors: 
@@ -716,7 +708,7 @@ MonoBehaviour:
       m_Action: Drag Start
       m_Flags: 0
     - m_Name: 
-      m_Id: 5cf69c10-a061-48dc-9582-575516d6ffc8
+      m_Id: 8c689541-be89-4355-9e6b-0ea57964f8bd
       m_Path: <Touchscreen>/touch
       m_Interactions: Press
       m_Processors: 
@@ -726,13 +718,13 @@ MonoBehaviour:
   DragEnd:
     m_Name: Drag End
     m_ExpectedControlLayout: 
-    m_Id: 0c42429e-e5ee-4b2c-a60c-d23dd9da905e
+    m_Id: 980b5dd9-ce52-4278-8512-c5a3f2386226
     m_Flags: 0
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 81c18469-15c1-40c7-b288-a9d3a9a57f65
+      m_Id: 9c95f84c-fd1f-4961-af0c-052965268e34
       m_Path: <Mouse>/button
       m_Interactions: Press(behavior=1)
       m_Processors: 
@@ -740,7 +732,7 @@ MonoBehaviour:
       m_Action: Drag End
       m_Flags: 0
     - m_Name: 
-      m_Id: 65680e3e-e9d2-498f-882d-4f0caba5c3b3
+      m_Id: e74bf965-2d18-4a42-98d4-322bc59ccfba
       m_Path: <Touchscreen>/touch
       m_Interactions: Press(behavior=1)
       m_Processors: 
@@ -1141,7 +1133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3032d7eb937a4c7f8498d9f84cd4c79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_maxMoveSpeed: 5
+  m_maxMoveSpeed: 0.05
   m_cameraDistance: 40
 --- !u!1 &2116404819
 GameObject:
@@ -1314,6 +1306,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 9122013314011303786, guid: f5fdb2fe55acb45b1a016b5885fe8e40,
+        type: 3}
+      propertyPath: m_bulletModel
+      value: 
+      objectReference: {fileID: 7235812604947944699, guid: b46d4baeec44c4834adb2b4856e0747e,
+        type: 3}
+    - target: {fileID: 9122013314011303786, guid: f5fdb2fe55acb45b1a016b5885fe8e40,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9122013314011303786, guid: f5fdb2fe55acb45b1a016b5885fe8e40,
+        type: 3}
+      propertyPath: m_moveSys
+      value: 
+      objectReference: {fileID: 1899148328}
     - target: {fileID: 7823597476292933319, guid: f5fdb2fe55acb45b1a016b5885fe8e40,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1369,22 +1377,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9122013314011303786, guid: f5fdb2fe55acb45b1a016b5885fe8e40,
-        type: 3}
-      propertyPath: m_bulletModel
-      value: 
-      objectReference: {fileID: 7235812604947944699, guid: b46d4baeec44c4834adb2b4856e0747e,
-        type: 3}
-    - target: {fileID: 9122013314011303786, guid: f5fdb2fe55acb45b1a016b5885fe8e40,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9122013314011303786, guid: f5fdb2fe55acb45b1a016b5885fe8e40,
-        type: 3}
-      propertyPath: m_moveSys
-      value: 
-      objectReference: {fileID: 1899148328}
     m_RemovedComponents:
     - {fileID: 2766113961566899451, guid: f5fdb2fe55acb45b1a016b5885fe8e40, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f5fdb2fe55acb45b1a016b5885fe8e40, type: 3}
