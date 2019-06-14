@@ -23,9 +23,13 @@ namespace GAME.INPUT
     /// </summary>
     public struct InputData : IComponentData
     {
+        /// <summary> スクリーン座標 </summary>
         public float2 ScreenPosition;
+        /// <summary> 状態 </summary>
+        public TOUCH_STATE State;
+        /// <summary> 現在時刻 </summary>
         public float CurrentTime;
+        /// <summary> 差分時刻[sec] </summary>
         public float DeltaTime;
-        public bool IsPressed;
     }
 }

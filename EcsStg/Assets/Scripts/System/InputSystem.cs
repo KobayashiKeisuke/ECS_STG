@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 public class InputSystem : MonoBehaviour
 {
     public InputAction mouseInput;  // マウスの入力
@@ -42,6 +43,8 @@ public class InputSystem : MonoBehaviour
         DragStart.performed += this.OnDragStart;
         mouseInput.performed += this.OnDrag;
         DragEnd.performed += this.OnDragEnd;
+
+
     }
 
     private void OnDragStart(InputAction.CallbackContext _context )

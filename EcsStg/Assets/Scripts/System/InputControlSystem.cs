@@ -35,13 +35,10 @@ namespace GAME.INPUT
 
             public void Execute(Entity entity, int index, ref InputData _data)
             {
-                if( State != TOUCH_STATE.NONE )
-                {
-                    _data.ScreenPosition  = Position.xy;
-                    _data.CurrentTime     = CurrentTime;
-                    _data.DeltaTime       = DeltaTime;
-                    _data.IsPressed       = State != TOUCH_STATE.ENDED;
-                }
+                _data.State = State;
+                _data.ScreenPosition  = Position.xy;
+                _data.CurrentTime     = CurrentTime;
+                _data.DeltaTime       = DeltaTime;
             }
         }
 
@@ -92,7 +89,7 @@ namespace GAME.INPUT
             if( Input.touchCount > 0 )
             {
                 Touch t = Input.GetTouch(0);
-                return new float3( t.position.x, t.position.y, t.position.z );
+                return new float3( t.position.x, t.position.y, 0f);
             }
             return float3.zero;
             #endif
