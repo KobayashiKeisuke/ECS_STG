@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem;
+﻿using UnityEngine;
 
 
 public class InputSystem : MonoBehaviour
 {
+/*
     public InputAction mouseInput;  // マウスの入力
     public InputAction DragStart;   // ボタンを押したときのイベント
     public InputAction DragEnd;     // ボタンを離したときのイベント

@@ -3,7 +3,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
-using GAME.Entity;
+using GAME.DATA;
 
 namespace GAME
 {

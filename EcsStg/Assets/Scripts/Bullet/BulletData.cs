@@ -3,7 +3,7 @@ using UnityEngine;
 using Unity.Entities;
 using Unity.Transforms;
 
-namespace GAME.Entity
+namespace GAME.DATA
 {
 
     [Serializable]

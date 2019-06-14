@@ -6,7 +6,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
-using GAME.Entity;
+using GAME.DATA;
 
 namespace GAME
 {
@@ -36,7 +36,6 @@ namespace GAME
         //------------------------------------------
         #region ===== MEMBER_VARIABLES =====
 
-        private int m_Nway=1;
         List<BulletFactory> m_factories;
         #endregion //) ===== MEMBER_VARIABLES =====
 

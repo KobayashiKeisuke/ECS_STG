@@ -43,9 +43,9 @@ namespace GAME.UI
 
         [Header("オブジェクト")]
         [SerializeField, Tooltip("親SpriteObject")]
-        private Transform m_baseSpriteTrans;
+        private Transform m_baseSpriteTrans = null;
         [SerializeField, Tooltip("子SpriteObject")]
-        private Transform m_stickSpriteTrans;
+        private Transform m_stickSpriteTrans = null;
 
 
         /// <summary> Base の可動域 </summary>

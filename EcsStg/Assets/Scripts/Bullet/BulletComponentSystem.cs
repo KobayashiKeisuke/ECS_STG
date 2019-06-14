@@ -8,7 +8,7 @@ using Unity.Transforms;
 using UnityEngine;
 using Random = Unity.Mathematics.Random;
 
-using GAME.Entity;
+using GAME.DATA;
 
 public class BulletMoveSystem : JobComponentSystem
 {

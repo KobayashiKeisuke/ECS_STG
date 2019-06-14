@@ -34,12 +34,12 @@ public class CameraMove : MonoBehaviour
 
     /// <summary> X-Y平面 </summary>
     [SerializeField]
-    private CameraParam m_z_angleParam;
+    private CameraParam m_z_angleParam = null;
     public CameraParam Z_angleParam => m_z_angleParam;
 
     /// <summary> X-Z平面 </summary>
     [SerializeField]
-    private CameraParam m_y_angleParam;
+    private CameraParam m_y_angleParam  = null;
     public CameraParam Y_angleParam => m_y_angleParam;
     
 
