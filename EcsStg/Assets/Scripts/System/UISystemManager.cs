@@ -28,6 +28,7 @@ namespace GAME.UI
             // ECS の設定を呼ぶ
             EntityManager manager = World.Active.EntityManager;
             Entity e = manager.CreateEntity();
+            manager.SetName( e, "InputDataEntity");
             manager.AddComponentData( e, new InputData() );
         }
     }

@@ -22,6 +22,9 @@ public class PlayerMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
             Direction = t,
         };
 
+        var playerData = new PlayerData();
+
         dstManager.AddComponentData(_entity, moveData);
+        dstManager.AddComponentData(_entity, playerData);
     }
 }

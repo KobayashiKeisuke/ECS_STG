@@ -25,6 +25,10 @@ namespace GAME.INPUT
     {
         /// <summary> スクリーン座標 </summary>
         public float2 ScreenPosition;
+        /// <summary> 方向差分 </summary>
+        public float2 DiffPosition;
+        /// <summary> 方向[rad] </summary>
+        public float Angle;
         /// <summary> 状態 </summary>
         public TOUCH_STATE State;
         /// <summary> 現在時刻 </summary>

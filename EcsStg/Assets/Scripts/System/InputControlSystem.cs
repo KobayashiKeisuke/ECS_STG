@@ -17,43 +17,46 @@ namespace GAME.INPUT
     [UpdateBefore(typeof(BuildPhysicsWorld))]
     public class InputControlSystem : JobComponentSystem
     {
+        InputData m_currentInputData;
+        public InputData GetCurrentInputData() =>m_currentInputData;
+
         protected override void OnCreate()
         {
+            m_currentInputData = new InputData();
         }
         // Use the [BurstCompile] attribute to compile a job with Burst. You may see significant speed ups, so try it!
         [BurstCompile]
         struct InputJob : IJobForEachWithEntity<InputData>
         {
-            /// <summary> Screen座標</summary>
-            public float3 Position;
-            /// <summary> タッチ状態</summary>
-            public TOUCH_STATE State;
-            /// <summary> 現在時刻</summary>
-            public float CurrentTime;
-            /// <summary> 差分時間</summary>
-            public float DeltaTime;
+            /// <summary> 最新データ</summary>
+            public InputData Data;
 
             public void Execute(Entity entity, int index, ref InputData _data)
             {
-                _data.State = State;
-                _data.ScreenPosition  = Position.xy;
-                _data.CurrentTime     = CurrentTime;
-                _data.DeltaTime       = DeltaTime;
+                _data.State             = Data.State;
+                _data.ScreenPosition    = Data.ScreenPosition;
+                _data.CurrentTime       = Data.CurrentTime;
+                _data.DeltaTime         = Data.DeltaTime;
+                _data.DiffPosition      = Data.DiffPosition;
+                _data.Angle             = Data.Angle;
             }
         }
 
         // OnUpdate runs on the main thread.
         protected override JobHandle OnUpdate(JobHandle inputDependencies)
         {
-            TOUCH_STATE state = InputUtil.GetTouchState();
             float3 position = InputUtil.GetPosition();
-            Debug.Log($"State:{state}, Pos({position.x},{position.y}");
+
+            m_currentInputData.State            = InputUtil.GetTouchState();
+            m_currentInputData.CurrentTime      = Time.realtimeSinceStartup;
+            m_currentInputData.DeltaTime        = Time.deltaTime;
+            m_currentInputData.DiffPosition     = position.xy - m_currentInputData.ScreenPosition;
+            m_currentInputData.Angle            = math.atan2(  m_currentInputData.DiffPosition.y,  m_currentInputData.DiffPosition.x);
+            m_currentInputData.ScreenPosition   = position.xy;
+
             var job = new InputJob
             {
-                Position = position,
-                State = state,
-                CurrentTime = Time.realtimeSinceStartup,
-                DeltaTime = Time.deltaTime,
+                Data = GetCurrentInputData(),
             };
 
             return job.Schedule(this, inputDependencies);

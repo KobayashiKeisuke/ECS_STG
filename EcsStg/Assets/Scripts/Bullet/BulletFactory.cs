@@ -139,12 +139,12 @@ namespace GAME
             var prefab = GameObjectConversionUtility.ConvertGameObjectHierarchy( BulletPrefab, World.Active );
             for (int i = 0; i < _instanceCount; i++)
             {
-                var instance = entityManager.Instantiate( prefab );
-                entityManager.SetComponentData(instance, new Translation {Value = new float3(INIT_POS,INIT_POS,INIT_POS)});
-                entityManager.SetComponentData<BulletData>( instance, new BulletData(){IsInitialized = false} );
-                entityManager.SetComponentData<ObjectMoveData>( instance, new ObjectMoveData(){} );
+                var entity = entityManager.Instantiate( prefab );
+                entityManager.SetComponentData(entity, new Translation {Value = new float3(INIT_POS,INIT_POS,INIT_POS)});
+                entityManager.SetComponentData<BulletData>( entity, new BulletData(){IsInitialized = false} );
+                entityManager.SetComponentData<ObjectMoveData>( entity, new ObjectMoveData(){} );
 
-                m_entities[i] = instance;
+                m_entities[i] = entity;
             }
         }
 
