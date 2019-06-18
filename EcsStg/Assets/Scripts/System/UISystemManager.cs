@@ -18,6 +18,10 @@ namespace GAME.UI
         private UIStickController m_stickCtrl = null;
         [SerializeField]
         private PlayerInstance m_player = null;
+        [SerializeField]
+        private GameObject m_basePrefab = null;
+        [SerializeField]
+        private GameObject m_stickPrefab = null;
 
         protected override void Init()
         {
@@ -30,6 +34,9 @@ namespace GAME.UI
             Entity e = manager.CreateEntity();
             manager.SetName( e, "InputDataEntity");
             manager.AddComponentData( e, new InputData() );
+
+            var uiSystem = World.Active.GetOrCreateSystem<EcsUISystem>();
+            uiSystem.Initialize( m_uiCamera, m_basePrefab, m_stickPrefab);
         }
     }
 }

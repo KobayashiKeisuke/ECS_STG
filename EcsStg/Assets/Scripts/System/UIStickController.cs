@@ -114,9 +114,9 @@ namespace GAME.UI
             // Stick の可動域
             m_stickMoveRange = (BaseSpriteRadius - m_stickerSpriteParam.Radius);// Radius
 
-            _sys.AddOnDragStartEvent( this.OnDragStart );
-            _sys.AddOnDragEvent( this.OnDrag );
-            _sys.AddOnDragEndEvent( this.OnDragEnd );
+            // _sys.AddOnDragStartEvent( this.OnDragStart );
+            // _sys.AddOnDragEvent( this.OnDrag );
+            // _sys.AddOnDragEndEvent( this.OnDragEnd );
 
             HideUI();
         }
@@ -148,7 +148,7 @@ namespace GAME.UI
             }
             // World 座標系で表現
             Vector3 nextStickPosition = MainCam.ScreenToWorldPoint(new Vector3(_screenPos.x * Screen.width, _screenPos.y* Screen.height, 0f) );
-            nextStickPosition.z = m_stickSpriteTrans.position.z;
+            nextStickPosition.y = m_stickSpriteTrans.position.y;
             Vector3 diffPos = nextStickPosition - m_baseSpriteTrans.position;
             float theta = Mathf.Atan2( diffPos.y , diffPos.x );
 
