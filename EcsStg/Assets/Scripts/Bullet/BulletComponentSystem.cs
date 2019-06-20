@@ -5,16 +5,24 @@ using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
+using Unity.Rendering;
 using UnityEngine;
 using Random = Unity.Mathematics.Random;
 
 using GAME.DATA;
 
-public class BulletMoveSystem : JobComponentSystem
+public class BulletComponentSystem : JobComponentSystem
 {
     const float X_RANGE = 20.0f;
     const float Y_RANGE = 20.0f;
     const float Z_RANGE = 20.0f;
+
+    public Entity m_playerEntity;
+
+    public void Initialize( Entity _playerEntity )
+    {
+        m_playerEntity = _playerEntity;
+    }
 
     // Use the [BurstCompile] attribute to compile a job with Burst. You may see significant speed ups, so try it!
     [BurstCompile]

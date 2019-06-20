@@ -26,7 +26,10 @@ public class PlayerMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
             Direction = t,
         };
 
-        var playerData = new PlayerData();
+        var playerData = new PlayerData()
+        {
+            Life = 100,
+        };
         var bulletFactoryData = new BulletFactoryData()
         {
             ParentEntity = _entity,
@@ -40,6 +43,7 @@ public class PlayerMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
             Speed = 0.1f,
             MoveDirection = new float3(0f, 0f, 1f ),
             Damage = 1,
+            BulletType = 0,
         };
 
 
@@ -60,5 +64,9 @@ public class PlayerMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
         dstManager.AddComponentData(_entity, moveData);
         dstManager.AddComponentData(_entity, playerData);
         dstManager.AddComponentData(_entity, bulletFactoryData);
+
+
+        BulletComponentSystem bulletSys = World.Active.GetOrCreateSystem<BulletComponentSystem>();
+        bulletSys.Initialize( _entity );
     }
 }

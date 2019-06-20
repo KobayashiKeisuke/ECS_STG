@@ -13,5 +13,7 @@ namespace GAME.DATA
         public bool IsInitialized;
         /// <summary> 弾のダメージ値 </summary>
         public int Damage;
+        /// <summary> 弾の属性, 0:Player, 1:Enemy </summary>
+        public int BulletType;
     }
 }

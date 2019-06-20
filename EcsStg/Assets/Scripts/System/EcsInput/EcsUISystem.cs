@@ -134,9 +134,9 @@ namespace GAME.UI
 
             // SpriteRender.bounds に該当するやつどうやってとるんだ？
             m_baseSpriteParam.PixelPerUnit      = _mainCam.orthographicSize;
-            m_baseSpriteParam.Radius            = 5;
+            m_baseSpriteParam.Radius            = 10;
             m_stickerSpriteParam.PixelPerUnit   = _mainCam.orthographicSize;
-            m_stickerSpriteParam.Radius         = 2;
+            m_stickerSpriteParam.Radius         = 3;
             // Base の可動域の設定
             Vector3 leftBottom = MainCam.ScreenToWorldPoint(new Vector3(0f, 0f, 0f) );
             Vector3 rightTop = MainCam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0f) );
@@ -145,6 +145,8 @@ namespace GAME.UI
 
             // Stick の可動域
             m_stickMoveRange = (BaseSpriteRadius - m_stickerSpriteParam.Radius);// Radius
+
+
             m_posY = leftBottom.y - 100;
             HideUI();
         }

@@ -28,5 +28,7 @@ namespace GAME.DATA
         public float3 MoveDirection;
         /// <summary> バレットのダメージ量 </summary>
         public int Damage;
+        /// <summary> 弾の属性, 0:Player, 1:Enemy </summary>
+        public int BulletType;
     }
 }

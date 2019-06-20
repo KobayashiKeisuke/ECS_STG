@@ -75,6 +75,7 @@ public class EnemyMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
                 Speed = m_buleltSpeed,
                 MoveDirection = CalcDirection( i, m_nway-1, new float3(0f, 0f, -1f ), m_angle),
                 Damage = 1,
+                BulletType = 1,
             };
 
             if( bulletFactorySys != null )

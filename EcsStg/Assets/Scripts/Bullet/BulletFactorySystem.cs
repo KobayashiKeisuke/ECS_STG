@@ -14,7 +14,7 @@ namespace GAME
     /// <summary>
     /// 弾幕生成エンジン
     /// </summary>
-    [UpdateBefore(typeof(BulletMoveSystem))]
+    [UpdateBefore(typeof(BulletComponentSystem))]
     public class BulletFactorySystem : ComponentSystem
     {
         //------------------------------------------
@@ -57,12 +57,12 @@ namespace GAME
                     ObjectMoveData moveData = new ObjectMoveData(){ Speed = factoryData.Speed, Direction = new Translation(){ Value = factoryData.MoveDirection} };
                     m_bulletsList.TryGetValue( factoryData.BulletListHandler, out var list );
 
-                    Spawn( m_entityManager, list, currentWorldPos.Value, factoryData.Damage, moveData );
+                    Spawn( m_entityManager, list, currentWorldPos.Value, factoryData.Damage, factoryData.BulletType, moveData );
                 }
             });
         }
 
-        public void Spawn( EntityManager _entityManager, List<Entity> list, float3 _parentPos, int _damage, ObjectMoveData moveData )
+        public void Spawn( EntityManager _entityManager, List<Entity> list, float3 _parentPos, int _damage, int _bulletType, ObjectMoveData moveData )
         {
             Debug.Assert( list != null );
             if( list == null )
@@ -74,8 +74,9 @@ namespace GAME
                 BulletData bulletInfo = _entityManager.GetComponentData<BulletData>( list[i]);
                 if( !bulletInfo.IsInitialized )
                 {
-                    bulletInfo.IsInitialized = true;
-                    bulletInfo.Damage = _damage;
+                    bulletInfo.IsInitialized    = true;
+                    bulletInfo.Damage           = _damage;
+                    bulletInfo.BulletType       = _bulletType;
                     _entityManager.SetComponentData(list[i], new Translation{Value = _parentPos});
                     _entityManager.SetComponentData<ObjectMoveData>( list[i], moveData );
                     _entityManager.SetComponentData<BulletData>( list[i], bulletInfo);
