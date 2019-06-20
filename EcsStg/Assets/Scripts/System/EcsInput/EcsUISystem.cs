@@ -116,12 +116,20 @@ namespace GAME.UI
             // UI生成
             var parentEntity    = E_Manager.Instantiate( GameObjectConversionUtility.ConvertGameObjectHierarchy( _mainPrefab, World.Active ) );
             E_Manager.SetComponentData(parentEntity, new Translation {Value = new float3(0f, 0f, 0f)});
+            #if UNITY_EDITOR
             E_Manager.SetName( parentEntity, "Base");
+            #endif
+
             var childEntity     = E_Manager.Instantiate( GameObjectConversionUtility.ConvertGameObjectHierarchy( _stickPrefab, World.Active ) );
             E_Manager.SetComponentData(childEntity, new Translation {Value = new float3(0f,0f,0f)});
+            #if UNITY_EDITOR
             E_Manager.SetName( childEntity, "Stick");
+            #endif
+
             var relationEntity = E_Manager.CreateEntity();
+            #if UNITY_EDITOR
             E_Manager.SetName( relationEntity, "UI_Relation");
+            #endif
 
             m_uiTransData = new EcsUIData()
             {

@@ -118,10 +118,14 @@ namespace GAME
                 entityManager.SetComponentData(entity, new Translation {Value = new float3(INIT_POS,INIT_POS,INIT_POS)});
                 entityManager.SetComponentData<BulletData>( entity, new BulletData(){IsInitialized = false} );
                 entityManager.SetComponentData<ObjectMoveData>( entity, new ObjectMoveData(){ Speed = 100f, Direction = new Translation(){ Value = float3.zero} } );
+
+                #if UNITY_EDITOR
                 if( !string.IsNullOrEmpty(entityName))
                 {
                     entityManager.SetName( entity, $"{entityName}_{i:D4}");
                 }
+                #endif
+                
                 list.Add( entity );
             }
 
