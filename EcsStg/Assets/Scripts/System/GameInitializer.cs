@@ -13,7 +13,7 @@ using GAME;
         #region ===== MEMBER_VARIABLES =====
         [Header("カメラ")]
         [SerializeField]
-        private Camera m_mainCam;
+        private Camera m_mainCam = null;
         #endregion //) ===== MEMBER_VARIABLES =====
 
         //------------------------------------------
