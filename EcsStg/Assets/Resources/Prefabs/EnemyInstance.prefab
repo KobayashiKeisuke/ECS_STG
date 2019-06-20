@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 153820703953437986}
-  - component: {fileID: 4633739165440829962}
+  - component: {fileID: 140927692470438840}
+  - component: {fileID: 2560861016750457628}
   m_Layer: 0
   m_Name: EnemyInstance
   m_TagString: Untagged
@@ -31,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4633739165440829962
+--- !u!114 &140927692470438840
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,11 +41,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 5440672035367411341}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c9d5e6cea1af4fa7b8cd42cf344e15c, type: 3}
+  m_Script: {fileID: 11500000, guid: 6eff11bbbb9c64da59f206d6908ff907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_playerModel: {fileID: 7362068243050984917, guid: 42e028e9114604c9a95a5bc6533edea4,
     type: 3}
   m_bulletModel: {fileID: 7235812604947944699, guid: 4b1e63af765864680810d3e3ee2a11cb,
     type: 3}
+  m_nway: 21
+  m_angle: 90
   m_spawnCycle: 1
+--- !u!114 &2560861016750457628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5440672035367411341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConversionMode: 0

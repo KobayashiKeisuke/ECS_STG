@@ -22,9 +22,9 @@ namespace GAME
         //------------------------------------------
         #region ===== MEMBER_VARIABLES =====
         
-        EntityManager m_entityManager;
+        protected EntityManager m_entityManager;
 
-        Dictionary<int, List<Entity>> m_bulletsList = new Dictionary< int, List<Entity>>();
+        protected Dictionary<int, List<Entity>> m_bulletsList = new Dictionary< int, List<Entity>>();
         #endregion //) ===== MEMBER_VARIABLES =====
 
         //------------------------------------------
@@ -106,7 +106,6 @@ namespace GAME
         /// <returns></returns>
         public int CreateBulletObject(int _instanceCount, GameObject _prefab, string entityName = null )
         {
-            Debug.LogWarning($"Create Bullet Object:{_instanceCount }");
             var list = new List<Entity>(_instanceCount);
             const float INIT_POS = 10000f;
 
