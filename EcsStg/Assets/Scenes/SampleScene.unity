@@ -1143,7 +1143,7 @@ PrefabInstance:
     - target: {fileID: 140927692470438840, guid: 0f188ad220b3b4e6a877e8f3a2bfca41,
         type: 3}
       propertyPath: m_spawnCycle
-      value: 2
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 140927692470438840, guid: 0f188ad220b3b4e6a877e8f3a2bfca41,
         type: 3}

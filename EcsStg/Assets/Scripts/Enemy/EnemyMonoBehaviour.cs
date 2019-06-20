@@ -23,8 +23,6 @@ public class EnemyMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
         //------------------------------------------
         #region ===== MEMBER_VARIABLES =====
         [SerializeField]
-        private GameObject m_playerModel = null;
-        [SerializeField]
         private GameObject m_bulletModel = null;
         [SerializeField]
         private int m_nway = 3;

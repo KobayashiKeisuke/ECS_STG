@@ -10,14 +10,10 @@ namespace GAME.UI
 
     public class UISystemManager : Singleton<UISystemManager>
     {
-        [SerializeField]
-        private InputSystem m_inputSystem = null;
+        // [SerializeField]
+        // private InputSystem m_inputSystem = null;
         [SerializeField]
         private Camera m_uiCamera = null;
-        [SerializeField]
-        private UIStickController m_stickCtrl = null;
-        [SerializeField]
-        private PlayerInstance m_player = null;
         [SerializeField]
         private GameObject m_basePrefab = null;
         [SerializeField]
