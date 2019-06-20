@@ -21,6 +21,9 @@ namespace GAME
     public class PlayerComponentSystem : JobComponentSystem
     {
         private const float MAX_MOVE_SPEED = 0.05f;
+        private const float RANGE_LIMIT = 0.05f;// 上下左右N%を移動範囲制限
+
+
         Camera MainCam;
         private EcsUISystem m_uiSystem;
         
@@ -30,6 +33,12 @@ namespace GAME
             m_uiSystem = currentWorld.GetOrCreateSystem<EcsUISystem>();
             Debug.Assert( m_uiSystem != null );
         }
+
+        public void Initialize( Camera _cam )
+        {
+            MainCam = _cam;
+            Debug.Assert( MainCam != null );
+        }
         // Use the [BurstCompile] attribute to compile a job with Burst. You may see significant speed ups, so try it!
         [BurstCompile]
         struct PlayerMoveJob : IJobForEachWithEntity<Translation, PlayerData, ObjectMoveData >
@@ -37,7 +46,7 @@ namespace GAME
             /// <summary> World 座標のX軸移動範囲</summary>
             public float2 X_Range;
             /// <summary> World 座標のY軸移動範囲</summary>
-            public float2 Y_Range;
+            public float2 Z_Range;
             /// <summary> 移動速度</summary>
             public float MoveSpeed;
             /// <summary> 移動速度</summary>
@@ -50,15 +59,15 @@ namespace GAME
                 // パラメータ更新 設定
                 moveData.Speed = MoveRange * MoveSpeed;
                 moveData.Direction.Value.x = math.cos( MoveAngle );
-                moveData.Direction.Value.y = math.sin( MoveAngle );
+                moveData.Direction.Value.z = math.sin( MoveAngle );
                 // 移動範囲チェック
                 float nextXPos = pos.Value.x + moveData.Direction.Value.x * moveData.Speed;
-                float nextYPos = pos.Value.y + moveData.Direction.Value.y * moveData.Speed;
+                float nextZPos = pos.Value.z + moveData.Direction.Value.z * moveData.Speed;
                 if( nextXPos < X_Range.x || X_Range.y <= nextXPos )
                 {
                     moveData.Speed = 0f;
                 }
-                if( nextYPos < Y_Range.x || Y_Range.y <= nextYPos )
+                if( nextZPos < Z_Range.x || Z_Range.y <= nextZPos )
                 {
                     moveData.Speed = 0f;
                 }
@@ -68,18 +77,16 @@ namespace GAME
         // OnUpdate runs on the main thread.
         protected override JobHandle OnUpdate(JobHandle inputDependencies)
         {
-            if( MainCam == null )
-            {
-                MainCam = Camera.main;
-                Debug.Assert( MainCam != null );
-            }
             // Base の可動域の設定
-            Vector3 leftBottom = MainCam.ScreenToWorldPoint( Vector3.zero );
-            Vector3 rightTop = MainCam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0f) );
+            float frustumHeight = MainCam.transform.position.y * Mathf.Tan(MainCam.fieldOfView * 0.5f * Mathf.Deg2Rad) * ( 1.0f - RANGE_LIMIT);
+            float frustumWidth = frustumHeight / Screen.height * Screen.width * ( 1.0f - RANGE_LIMIT);
+            Vector3 frustumLeftBot = new Vector3( -frustumWidth, 0f, -frustumHeight);
+            Vector3 frustumRightTop = new Vector3( frustumWidth, 0f, frustumHeight);
+
             var job = new PlayerMoveJob
             {
-                X_Range     = new float2( leftBottom.x, rightTop.x),
-                Y_Range     = new float2( leftBottom.y, rightTop.y),
+                X_Range     = new float2( frustumLeftBot.x, frustumRightTop.x),
+                Z_Range     = new float2( frustumLeftBot.z, frustumRightTop.z),
                 MoveSpeed   = MAX_MOVE_SPEED,
                 MoveRange   = m_uiSystem.UiData.Range,
                 MoveAngle   = m_uiSystem.UiData.Angle,

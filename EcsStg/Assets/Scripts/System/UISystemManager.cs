@@ -27,8 +27,6 @@ namespace GAME.UI
         {
             base.Init();
 
-            m_stickCtrl?.Initialize( m_inputSystem, m_uiCamera, m_player.MoveSys);
-
             // ECS の設定を呼ぶ
             EntityManager manager = World.Active.EntityManager;
             Entity e = manager.CreateEntity();

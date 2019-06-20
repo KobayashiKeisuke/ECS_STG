@@ -140,7 +140,6 @@ namespace GAME.UI
             // Base の可動域の設定
             Vector3 leftBottom = MainCam.ScreenToWorldPoint(new Vector3(0f, 0f, 0f) );
             Vector3 rightTop = MainCam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0f) );
-            Debug.Log($"LB:{leftBottom}. RT:{rightTop}");
             m_baseMoveRange_X = new Vector2( leftBottom.x, rightTop.x);
             m_baseMoveRange_Z = new Vector2( leftBottom.z, rightTop.z);
 
@@ -148,8 +147,6 @@ namespace GAME.UI
             m_stickMoveRange = (BaseSpriteRadius - m_stickerSpriteParam.Radius);// Radius
             m_posY = leftBottom.y - 100;
             HideUI();
-            Debug.Log($"X:{m_baseMoveRange_X.x}<->{m_baseMoveRange_X.y}");
-            Debug.Log($"Z:{m_baseMoveRange_Z.x}<->{m_baseMoveRange_Z.y}");
         }
 
         protected override void OnCreate()

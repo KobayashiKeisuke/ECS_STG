@@ -1,6 +1,4 @@
-﻿
-using System;
-using Unity.Entities;
+﻿using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
@@ -11,6 +9,7 @@ using GAME.DATA;
 [RequiresEntityConversion]
 public class PlayerMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
 {
+
     public void Convert( Entity _entity, EntityManager dstManager, GameObjectConversionSystem _conversionSystem )
     {
         Translation t = new Translation();
