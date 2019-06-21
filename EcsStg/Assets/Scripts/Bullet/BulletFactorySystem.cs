@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
-using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
@@ -75,6 +72,7 @@ namespace GAME
                 if( !bulletInfo.IsInitialized )
                 {
                     bulletInfo.IsInitialized    = true;
+                    bulletInfo.IsCollide        = false;
                     bulletInfo.Damage           = _damage;
                     bulletInfo.BulletType       = _bulletType;
                     _entityManager.SetComponentData(list[i], new Translation{Value = _parentPos});
@@ -125,7 +123,7 @@ namespace GAME
                     entityManager.SetName( entity, $"{entityName}_{i:D4}");
                 }
                 #endif
-                
+
                 list.Add( entity );
             }
 

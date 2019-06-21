@@ -497,6 +497,11 @@ PrefabInstance:
       propertyPath: m_buleltSpeed
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 140927692470438840, guid: 0f188ad220b3b4e6a877e8f3a2bfca41,
+        type: 3}
+      propertyPath: m_nway
+      value: 21
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f188ad220b3b4e6a877e8f3a2bfca41, type: 3}
 --- !u!1 &705507993
@@ -600,7 +605,6 @@ GameObject:
   m_Component:
   - component: {fileID: 822595549}
   - component: {fileID: 822595548}
-  - component: {fileID: 822595550}
   - component: {fileID: 822595551}
   m_Layer: 0
   m_Name: System
@@ -707,24 +711,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &822595550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 822595547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c5c3eb0a998344e4bcb49fecea61d17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_inputSystem: {fileID: 822595548}
-  m_uiCamera: {fileID: 597145683}
-  m_stickCtrl: {fileID: 0}
-  m_player: {fileID: 0}
-  m_basePrefab: {fileID: 0}
-  m_stickPrefab: {fileID: 0}
 --- !u!114 &822595551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -968,10 +954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c5c3eb0a998344e4bcb49fecea61d17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_inputSystem: {fileID: 822595548}
   m_uiCamera: {fileID: 597145683}
-  m_stickCtrl: {fileID: 0}
-  m_player: {fileID: 0}
   m_basePrefab: {fileID: 1715560016988351697, guid: 4cc214eb95ab74caf87e4dc1bb0c960c,
     type: 3}
   m_stickPrefab: {fileID: 7659369864801948673, guid: b9987cd26479a47c3b69af55531f6018,
@@ -1120,16 +1103,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4633739165440829962, guid: 0f188ad220b3b4e6a877e8f3a2bfca41,
-        type: 3}
-      propertyPath: m_angle
-      value: 360
-      objectReference: {fileID: 0}
-    - target: {fileID: 4633739165440829962, guid: 0f188ad220b3b4e6a877e8f3a2bfca41,
-        type: 3}
-      propertyPath: m_nway
-      value: 51
-      objectReference: {fileID: 0}
     - target: {fileID: 140927692470438840, guid: 0f188ad220b3b4e6a877e8f3a2bfca41,
         type: 3}
       propertyPath: m_nway
@@ -1149,6 +1122,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_buleltSpeed
       value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 4633739165440829962, guid: 0f188ad220b3b4e6a877e8f3a2bfca41,
+        type: 3}
+      propertyPath: m_angle
+      value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 4633739165440829962, guid: 0f188ad220b3b4e6a877e8f3a2bfca41,
+        type: 3}
+      propertyPath: m_nway
+      value: 51
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f188ad220b3b4e6a877e8f3a2bfca41, type: 3}

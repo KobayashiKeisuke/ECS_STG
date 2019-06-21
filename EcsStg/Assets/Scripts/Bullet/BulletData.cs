@@ -15,5 +15,7 @@ namespace GAME.DATA
         public int Damage;
         /// <summary> 弾の属性, 0:Player, 1:Enemy </summary>
         public int BulletType;
+        /// <summary> あたり判定があったかどうか </summary>
+        public bool IsCollide;
     }
 }

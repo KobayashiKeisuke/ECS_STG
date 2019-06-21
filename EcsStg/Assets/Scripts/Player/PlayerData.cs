@@ -19,5 +19,7 @@ namespace GAME.DATA
         public int AtkLevel;
         /// <summary> 移動速度レベル </summary>
         public int SpeedLevel;
+        /// <summary> ゲームオーバー判定 </summary>
+        public bool IsGameOver;
     }
 }

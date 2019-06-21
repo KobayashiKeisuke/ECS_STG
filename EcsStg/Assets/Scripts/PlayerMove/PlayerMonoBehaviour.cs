@@ -58,7 +58,6 @@ public class PlayerMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
             int count = BulletFactorySystem.CalcPreloadObjectCount( maxSize, bulletFactoryData.Speed, 1.0f, bulletFactoryData.SpawnCycle);
 
             bulletFactoryData.BulletListHandler = bulletFactorySys.CreateBulletObject(count, m_bulletObjectPrefab, "MyBullet");
-            Debug.Log($"Handler:{bulletFactoryData.BulletListHandler}");
         }
 
         dstManager.AddComponentData(_entity, moveData);
@@ -66,7 +65,7 @@ public class PlayerMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
         dstManager.AddComponentData(_entity, bulletFactoryData);
 
 
-        BulletComponentSystem bulletSys = World.Active.GetOrCreateSystem<BulletComponentSystem>();
+        BulletCollisionSystem bulletSys = World.Active.GetOrCreateSystem<BulletCollisionSystem>();
         bulletSys.Initialize( _entity );
     }
 }

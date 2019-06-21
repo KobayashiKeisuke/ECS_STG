@@ -10,8 +10,8 @@ namespace GAME
         public const int FPS = 60;
 
         /// <summary>Screen 幅 </summary>
-        public const float SCREE_WIDTH = 40f;
+        public const float SCREEN_WIDTH = 40f;
         /// <summary> Screen 高 </summary>
-        public const float SCREE_HEIGHT = 40f;
+        public const float SCREEN_HEIGHT = 40f;
     }
 }

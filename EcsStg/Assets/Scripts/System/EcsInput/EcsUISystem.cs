@@ -4,6 +4,7 @@ using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
+using Unity.Rendering;
 using UnityEngine;
 
 namespace GAME.UI
@@ -139,8 +140,7 @@ namespace GAME.UI
             E_Manager.AddComponentData( relationEntity, m_uiTransData);
 
 
-
-            // SpriteRender.bounds に該当するやつどうやってとるんだ？
+            // Size 設定
             m_baseSpriteParam.PixelPerUnit      = _mainCam.orthographicSize;
             m_baseSpriteParam.Radius            = 10;
             m_stickerSpriteParam.PixelPerUnit   = _mainCam.orthographicSize;
@@ -184,6 +184,13 @@ namespace GAME.UI
         {
             Translation parentPos = E_Manager.GetComponentData<Translation>( m_uiTransData.Parent );
             Translation childPos = E_Manager.GetComponentData<Translation>( m_uiTransData.Child );
+            // RenderBounds parentBounds = E_Manager.GetComponentData<RenderBounds>( m_uiTransData.Parent );
+            // RenderBounds childBounds = E_Manager.GetComponentData<RenderBounds>( m_uiTransData.Child );
+            // m_baseSpriteParam.Radius            = math.max( parentBounds.Value.Extents.x, math.max(parentBounds.Value.Extents.y, parentBounds.Value.Extents.z));
+            // m_stickerSpriteParam.Radius            = math.max( childBounds.Value.Extents.x, math.max(childBounds.Value.Extents.y, childBounds.Value.Extents.z));
+            // // Stick の可動域
+            // m_stickMoveRange = (BaseSpriteRadius - m_stickerSpriteParam.Radius);// Radius
+
 
             var inputData = m_inputCtrlSys.GetCurrentInputData();
 
