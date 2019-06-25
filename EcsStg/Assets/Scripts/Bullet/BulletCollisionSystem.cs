@@ -80,7 +80,7 @@ namespace GAME
                 // バレットを消すように見せかける
                 _bulletPos.Value.x = GameConst.SCREEN_WIDTH;
                 _bulletPos.Value.z = GameConst.SCREEN_HEIGHT;
-                _playerData.Life--;
+                _playerData.Life-= _bullet.Damage;
                 _bullet.IsCollide = true;
             }
         }
@@ -95,7 +95,7 @@ namespace GAME
                 Debug.Log($"EnemyHit\nRange ({_bulletPos.Value.x -bound.x}, {_bulletPos.Value.x +bound.x})\n({_bulletPos.Value.y -bound.y}, {_bulletPos.Value.y +bound.y})\n({_bulletPos.Value.z -bound.z}, {_bulletPos.Value.z +bound.z})\n");
                 _bulletPos.Value.x = GameConst.SCREEN_WIDTH;
                 _bulletPos.Value.z = GameConst.SCREEN_HEIGHT;
-                _enemyData.HP--;
+                _enemyData.HP-= _bullet.Damage;
                 _bullet.IsCollide = true;
             }
         }
