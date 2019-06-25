@@ -56,17 +56,13 @@ namespace GAME
                 float2 diffScreenPos;
                 diffScreenPos.x = math.cos( angle ) * speed;
                 diffScreenPos.y = math.sin( angle ) * speed;
-                Debug.Log($"[Diff]{diffScreenPos}");
+
                 float2 nextScreenPos = playerData.PrevScreenPos + diffScreenPos;
                 nextScreenPos.x = math.clamp( nextScreenPos.x, Screen.width * RANGE_LIMIT, Screen.width * ( 1.0f - RANGE_LIMIT) );
                 nextScreenPos.y = math.clamp( nextScreenPos.y, Screen.height * RANGE_LIMIT, Screen.height * ( 1.0f - RANGE_LIMIT) );
 
                 float3 nextWorldPos = MainCam.ScreenToWorldPoint( new Vector3( nextScreenPos.x, nextScreenPos.y, TARGET_DISTANCE));
-                Debug.Log($"[Convert]{nextScreenPos} -> {nextWorldPos}");
 
-                // nextWorldPos += normalizedForwardVec * TARGET_DISTANCE;
-
-                Debug.Log($"[Screen] {playerData.PrevScreenPos}->{nextScreenPos}\n[World] {pos.Value}->{nextWorldPos}");
                 moveData.Direction.Value = nextWorldPos - pos.Value;
                 moveData.Speed = 1.0f;
 

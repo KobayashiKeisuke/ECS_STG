@@ -13,5 +13,7 @@ namespace GAME
         public const float SCREEN_WIDTH = 40f;
         /// <summary> Screen 高 </summary>
         public const float SCREEN_HEIGHT = 40f;
+
+        public const int DEFAULT_LIFE_COUNT = 100;
     }
 }
