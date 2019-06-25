@@ -29,6 +29,7 @@ public class PlayerMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
         var playerData = new PlayerData()
         {
             Life = 100,
+            PrevScreenPos = new float2( Screen.width * 0.5f, Screen.height * 0.5f),
         };
         var bulletFactoryData = new BulletFactoryData()
         {
@@ -67,5 +68,6 @@ public class PlayerMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
 
         BulletCollisionSystem bulletSys = World.Active.GetOrCreateSystem<BulletCollisionSystem>();
         bulletSys.Initialize( _entity );
+
     }
 }

@@ -18,11 +18,11 @@ namespace GAME
     /// まっさきに入力を受け付けてから物理世界を更新かけるため更新順を定義
     /// </summary>
     [UpdateAfter(typeof(EcsUISystem))]
-    public class PlayerComponentSystem : JobComponentSystem
+    public class PlayerComponentSystem : ComponentSystem
     {
-        private const float MAX_MOVE_SPEED = 0.05f;
+        private const float MAX_MOVE_SPEED = 5.0f;
         private const float RANGE_LIMIT = 0.05f;// 上下左右N%を移動範囲制限
-
+        private const float TARGET_DISTANCE = 40.0f;
 
         Camera MainCam;
         private EcsUISystem m_uiSystem;
@@ -39,60 +39,54 @@ namespace GAME
             MainCam = _cam;
             Debug.Assert( MainCam != null );
         }
-        // Use the [BurstCompile] attribute to compile a job with Burst. You may see significant speed ups, so try it!
-        [BurstCompile]
-        struct PlayerMoveJob : IJobForEachWithEntity<Translation, PlayerData, ObjectMoveData >
+        // OnUpdate runs on the main thread.
+        protected override void OnUpdate()
         {
-            /// <summary> World 座標のX軸移動範囲</summary>
-            public float2 X_Range;
-            /// <summary> World 座標のY軸移動範囲</summary>
-            public float2 Z_Range;
-            /// <summary> 移動速度</summary>
-            public float MoveSpeed;
-            /// <summary> 移動速度</summary>
-            public float MoveRange;
-            /// <summary> 移動方向[rad]</summary>
-            public float MoveAngle;
+            // float3 currentPos = MainCam.transform.position;
+            // float3 normalizedRightVec      = MainCam.transform.right.normalized;
+            // float3 normalizedUpVec         = MainCam.transform.up.normalized;
+            float3 normalizedForwardVec    = MainCam.transform.forward.normalized;
 
-            public void Execute(Entity entity, int index, [ReadOnly] ref Translation pos, ref PlayerData playerData, ref ObjectMoveData moveData )
+            float angle = m_uiSystem.UiData.Angle;
+            float range = m_uiSystem.UiData.Range;
+            Entities.ForEach( (ref Translation pos, ref PlayerData playerData, ref ObjectMoveData moveData )=>
             {
                 // パラメータ更新 設定
-                moveData.Speed = MoveRange * MoveSpeed;
-                moveData.Direction.Value.x = math.cos( MoveAngle );
-                moveData.Direction.Value.z = math.sin( MoveAngle );
-                // 移動範囲チェック
-                float nextXPos = pos.Value.x + moveData.Direction.Value.x * moveData.Speed;
-                float nextZPos = pos.Value.z + moveData.Direction.Value.z * moveData.Speed;
-                if( nextXPos < X_Range.x || X_Range.y <= nextXPos )
-                {
-                    moveData.Speed = 0f;
-                }
-                if( nextZPos < Z_Range.x || Z_Range.y <= nextZPos )
-                {
-                    moveData.Speed = 0f;
-                }
-            }
+                float speed = range * MAX_MOVE_SPEED;
+                float2 diffScreenPos;
+                diffScreenPos.x = math.cos( angle ) * speed;
+                diffScreenPos.y = math.sin( angle ) * speed;
+                Debug.Log($"[Diff]{diffScreenPos}");
+                float2 nextScreenPos = playerData.PrevScreenPos + diffScreenPos;
+                nextScreenPos.x = math.clamp( nextScreenPos.x, Screen.width * RANGE_LIMIT, Screen.width * ( 1.0f - RANGE_LIMIT) );
+                nextScreenPos.y = math.clamp( nextScreenPos.y, Screen.height * RANGE_LIMIT, Screen.height * ( 1.0f - RANGE_LIMIT) );
+
+                float3 nextWorldPos = MainCam.ScreenToWorldPoint( new Vector3( nextScreenPos.x, nextScreenPos.y, TARGET_DISTANCE));
+                Debug.Log($"[Convert]{nextScreenPos} -> {nextWorldPos}");
+
+                // nextWorldPos += normalizedForwardVec * TARGET_DISTANCE;
+
+                Debug.Log($"[Screen] {playerData.PrevScreenPos}->{nextScreenPos}\n[World] {pos.Value}->{nextWorldPos}");
+                moveData.Direction.Value = nextWorldPos - pos.Value;
+                moveData.Speed = 1.0f;
+
+                playerData.PrevScreenPos = nextScreenPos;
+            });
+
         }
-
-        // OnUpdate runs on the main thread.
-        protected override JobHandle OnUpdate(JobHandle inputDependencies)
+        /// <summary>
+        /// カメラのローカルZ軸方向(法線ベクトル:n) にカメラからd 離れた点のカメラのローカルX-Y平面へ
+        /// 点P を正射影した位置を計算する
+        /// </summary>
+        /// <param name="p">点P</param>
+        /// <param name="n">カメラのローカルZ軸ベクトル</param>
+        /// <param name="d">カメラのローカルZ軸の位置</param>
+        /// <returns></returns>
+        public static float3 CalcProjectionPoint( float3 p, float3 n, float d)
         {
-            // Base の可動域の設定
-            float frustumHeight = MainCam.transform.position.y * Mathf.Tan(MainCam.fieldOfView * 0.5f * Mathf.Deg2Rad) * ( 1.0f - RANGE_LIMIT);
-            float frustumWidth = frustumHeight / Screen.height * Screen.width * ( 1.0f - RANGE_LIMIT);
-            Vector3 frustumLeftBot = new Vector3( -frustumWidth, 0f, -frustumHeight);
-            Vector3 frustumRightTop = new Vector3( frustumWidth, 0f, frustumHeight);
+            float coeff = d - math.dot( p, n) / math.dot( n, n);
 
-            var job = new PlayerMoveJob
-            {
-                X_Range     = new float2( frustumLeftBot.x, frustumRightTop.x),
-                Z_Range     = new float2( frustumLeftBot.z, frustumRightTop.z),
-                MoveSpeed   = MAX_MOVE_SPEED,
-                MoveRange   = m_uiSystem.UiData.Range,
-                MoveAngle   = m_uiSystem.UiData.Angle,
-            };
-
-            return job.Schedule(this, inputDependencies);
+            return new float3( coeff*n.x + p.x, coeff*n.y + p.y, coeff*n.z + p.z );
         }
     }
 

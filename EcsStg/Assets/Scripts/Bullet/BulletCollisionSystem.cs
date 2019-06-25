@@ -4,7 +4,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using Unity.Rendering;
 using UnityEngine;
-
+using System.Collections.Generic;
 using GAME.DATA;
 
 namespace GAME
@@ -14,47 +14,90 @@ namespace GAME
     {
 
         private Entity m_playerEntity;
+        private List<EnemyData> enemyDataList = new List<EnemyData>();
+        private List<Translation> enemyPosList = new List<Translation>();
 
+        private List<Entity> m_enemies = new List<Entity>();
+        private EntityManager m_manager;
+
+        public void AddEnemy( Entity _e){ m_enemies.Add( _e ); }
         public void Initialize( Entity _playerEntity )
         {
             m_playerEntity = _playerEntity;
+            m_manager = World.Active.EntityManager;
         }
 
         // OnUpdate runs on the main thread.
         protected override void OnUpdate()
         {
-            var manager = World.Active.EntityManager;
-            var Data = manager.GetComponentData<PlayerData>( m_playerEntity );
-            var PlayerPos = manager.GetComponentData<Translation>( m_playerEntity );
+            var Data = m_manager.GetComponentData<PlayerData>( m_playerEntity );
+            var PlayerPos = m_manager.GetComponentData<Translation>( m_playerEntity );
+            
+            enemyDataList.Clear();
+            enemyPosList.Clear();
+            foreach (var e in m_enemies)
+            {
+                enemyDataList.Add( m_manager.GetComponentData<EnemyData>( e ));
+                enemyPosList.Add( m_manager.GetComponentData<Translation>( e ) );
+            }
 
             Entities.ForEach( ( ref Translation _pos, ref RenderBounds _bounds, ref BulletData _bullet )=>
             {
-                // EnemyBullet 以外は対象外
-                if( _bullet.BulletType != 1 )
-                {
-                    return;
-                }
                 // 多段ヒット防止
                 if( _bullet.IsCollide )
                 {
                     return;
                 }
-
-                // 範囲内なら特になにもしない
-                float3 bound = _bounds.Value.Extents;
-                if( _pos.Value.x -bound.x <= PlayerPos.Value.x && PlayerPos.Value.x <= _pos.Value.x +bound.x
-                && _pos.Value.y - bound.y <= PlayerPos.Value.y && PlayerPos.Value.y <= _pos.Value.y + bound.y
-                && _pos.Value.z - bound.z <= PlayerPos.Value.z && PlayerPos.Value.z <= _pos.Value.z + bound.z)
+                switch( _bullet.BulletType )
                 {
-                    // バレットを消すように見せかける
-                    _pos.Value.x = GameConst.SCREEN_WIDTH;
-                    _pos.Value.z = GameConst.SCREEN_HEIGHT;
-                    Data.Life--;
-                    _bullet.IsCollide = true;
+                    case 0:
+                    {
+                        for (int i = 0; i < enemyDataList.Count; i++)
+                        {
+                            var eData = enemyDataList[i];
+                            EnemyCollision( ref eData, enemyPosList[i], ref _pos, ref _bounds, ref _bullet );
+                            enemyDataList[i] = eData;
+                        }
+                    }break;
+                    case 1:     PlayerCollision( ref Data, PlayerPos, ref _pos, ref _bounds, ref _bullet ); break;
                 }
             });
 
-            manager.SetComponentData( m_playerEntity, Data );
+            m_manager.SetComponentData( m_playerEntity, Data );
+            for (int i = 0; i < enemyDataList.Count; i++)
+            {
+                m_manager.SetComponentData( m_enemies[i], enemyDataList[i] );
+            }
+        }
+
+        private void PlayerCollision( ref PlayerData _playerData, Translation _targetPos, ref Translation _bulletPos, ref RenderBounds _bounds, ref BulletData _bullet )
+        {
+            float3 bound = _bounds.Value.Extents;
+            if( _bulletPos.Value.x -bound.x <= _targetPos.Value.x && _targetPos.Value.x <= _bulletPos.Value.x +bound.x
+            && _bulletPos.Value.y - bound.y <= _targetPos.Value.y && _targetPos.Value.y <= _bulletPos.Value.y + bound.y
+            && _bulletPos.Value.z - bound.z <= _targetPos.Value.z && _targetPos.Value.z <= _bulletPos.Value.z + bound.z)
+            {
+                // バレットを消すように見せかける
+                _bulletPos.Value.x = GameConst.SCREEN_WIDTH;
+                _bulletPos.Value.z = GameConst.SCREEN_HEIGHT;
+                _playerData.Life--;
+                _bullet.IsCollide = true;
+            }
+        }
+        private void EnemyCollision( ref EnemyData _enemyData, Translation _targetPos, ref Translation _bulletPos, ref RenderBounds _bounds, ref BulletData _bullet )
+        {
+            float3 bound = _bounds.Value.Extents;
+            if( _bulletPos.Value.x -bound.x <= _targetPos.Value.x && _targetPos.Value.x <= _bulletPos.Value.x +bound.x
+            && _bulletPos.Value.y - bound.y <= _targetPos.Value.y && _targetPos.Value.y <= _bulletPos.Value.y + bound.y
+            && _bulletPos.Value.z - bound.z <= _targetPos.Value.z && _targetPos.Value.z <= _bulletPos.Value.z + bound.z)
+            {
+                // バレットを消すように見せかける
+                Debug.Log($"EnemyHit\nRange ({_bulletPos.Value.x -bound.x}, {_bulletPos.Value.x +bound.x})\n({_bulletPos.Value.y -bound.y}, {_bulletPos.Value.y +bound.y})\n({_bulletPos.Value.z -bound.z}, {_bulletPos.Value.z +bound.z})\n");
+                _bulletPos.Value.x = GameConst.SCREEN_WIDTH;
+                _bulletPos.Value.z = GameConst.SCREEN_HEIGHT;
+                _enemyData.HP--;
+                _bullet.IsCollide = true;
+            }
         }
     }
 }

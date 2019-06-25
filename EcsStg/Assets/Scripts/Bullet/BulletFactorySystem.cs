@@ -75,7 +75,7 @@ namespace GAME
                     bulletInfo.IsCollide        = false;
                     bulletInfo.Damage           = _damage;
                     bulletInfo.BulletType       = _bulletType;
-                    _entityManager.SetComponentData(list[i], new Translation{Value = _parentPos});
+                    _entityManager.SetComponentData<Translation>(list[i], new Translation{Value = _parentPos});
                     _entityManager.SetComponentData<ObjectMoveData>( list[i], moveData );
                     _entityManager.SetComponentData<BulletData>( list[i], bulletInfo);
                     break;

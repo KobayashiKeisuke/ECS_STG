@@ -1,7 +1,6 @@
 ﻿using System;
-using UnityEngine;
 using Unity.Entities;
-using Unity.Transforms;
+using Unity.Mathematics;
 
 namespace GAME.DATA
 {
@@ -21,5 +20,7 @@ namespace GAME.DATA
         public int SpeedLevel;
         /// <summary> ゲームオーバー判定 </summary>
         public bool IsGameOver;
+        /// <summary> 前回のスクリーン座標 </summary>
+        public float2 PrevScreenPos;
     }
 }

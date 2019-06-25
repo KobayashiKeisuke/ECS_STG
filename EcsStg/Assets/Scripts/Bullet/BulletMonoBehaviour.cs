@@ -13,7 +13,7 @@ public class BulletMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
     public void Convert( Entity _entity, EntityManager dstManager, GameObjectConversionSystem _conversionSystem )
     {
         Translation t = new Translation();
-        t.Value = new float3(0f, 0f, -0.03f);
+        t.Value = new float3(0f, 0f, 0f);
 
         var bulletData = new BulletData()
         {

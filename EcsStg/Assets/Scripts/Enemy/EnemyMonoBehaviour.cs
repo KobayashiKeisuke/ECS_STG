@@ -23,7 +23,11 @@ public class EnemyMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
         //------------------------------------------
         #region ===== MEMBER_VARIABLES =====
         [SerializeField]
+        private GameObject m_objectModel = null;
+        [SerializeField]
         private GameObject m_bulletModel = null;
+        [SerializeField, Range(1, 100)]
+        private int m_hitPoint = 10;
         [SerializeField]
         private int m_nway = 3;
         [SerializeField, Range( 0f, 360f)]
@@ -40,6 +44,16 @@ public class EnemyMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
 
     public void Convert( Entity _entity, EntityManager dstManager, GameObjectConversionSystem _conversionSystem )
     {
+        // Enemy の基本データ
+        Entity model = dstManager.Instantiate( GameObjectConversionUtility.ConvertGameObjectHierarchy(m_objectModel, World.Active));
+        World.Active.GetOrCreateSystem<BulletCollisionSystem>().AddEnemy( model );
+        EnemyData enemyData = new EnemyData(){ HP = m_hitPoint };
+        dstManager.AddComponentData(model, enemyData);
+        Translation initPos = new Translation();
+        initPos.Value = new float3(this.transform.position.x, this.transform.position.y, this.transform.position.z );
+        dstManager.SetComponentData<Translation>(model, initPos);
+
+
         Translation t = new Translation();
         t.Value = new float3(0f, 0f, 0.0f);
 
@@ -48,7 +62,8 @@ public class EnemyMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
             Speed = 0.0f,
             Direction = t,
         };
-        dstManager.AddComponentData(_entity, moveData);
+        dstManager.AddComponentData(model, moveData);
+
 
 
 
@@ -64,7 +79,7 @@ public class EnemyMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
             var factoryEntity = dstManager.CreateEntity();
             var bulletFactoryData = new BulletFactoryData()
             {
-                ParentEntity = _entity,
+                ParentEntity = model,
                 PositionOffset = float3.zero,
                 RotationOffset = float3.zero,
 
