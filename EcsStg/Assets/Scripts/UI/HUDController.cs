@@ -25,6 +25,7 @@ namespace GAME.UI
         [SerializeField]
         private Text m_lifeText = null;
 
+        private int m_currentScore = 0;
         #endregion //) ===== MEMBER_VARIABLES =====
 
         //------------------------------------------
@@ -34,7 +35,7 @@ namespace GAME.UI
 
         public void Initialize( int _startLifeCount )
         {
-            UpdateText( m_scoreText, $"{SCORE_TEXT}{0}");
+            UpdateText( m_scoreText, $"{SCORE_TEXT}{m_currentScore}");
             UpdateLifeText( _startLifeCount);
         }
 
@@ -45,7 +46,11 @@ namespace GAME.UI
         //------------------------------------------
         #region ===== TEXT =====
 
-        public void AddScore( int _score ){ }
+        public void AddScore( int _score )
+        {
+            m_currentScore += _score;
+            UpdateText( m_scoreText, $"{SCORE_TEXT}{m_currentScore}");
+        }
         public void UpdateLifeText( int _score ){ UpdateText( m_lifeText, $"{LIFE_TEXT}{_score}"); }
 
         private void UpdateText( Text _t, string _msg)

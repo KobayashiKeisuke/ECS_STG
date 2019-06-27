@@ -55,7 +55,7 @@ public class PlayerMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
             float frustumHeight = cam.transform.position.y * Mathf.Tan(cam.fieldOfView * 0.5f * Mathf.Deg2Rad);
             float frustumWidth = frustumHeight / Screen.height * Screen.width;
 
-            float maxSize = math.max(frustumHeight, frustumWidth);
+            float maxSize = math.max(frustumHeight*2.0f, frustumWidth*2.0f);
             int count = BulletFactorySystem.CalcPreloadObjectCount( maxSize, bulletFactoryData.Speed, 1.0f, bulletFactoryData.SpawnCycle);
 
             bulletFactoryData.BulletListHandler = bulletFactorySys.CreateBulletObject(count, m_bulletObjectPrefab, "MyBullet");
@@ -70,5 +70,7 @@ public class PlayerMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
         bulletSys.Initialize( _entity );
 
         GAME.UI.UISystemManager.I.SetPlayerEntity( _entity );
+
+        World.Active.GetOrCreateSystem<BulletComponentSystem>().Initialize( Camera.main );
     }
 }

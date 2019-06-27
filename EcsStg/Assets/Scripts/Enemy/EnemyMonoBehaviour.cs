@@ -28,6 +28,8 @@ public class EnemyMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
         private GameObject m_bulletModel = null;
         [SerializeField, Range(1, 100)]
         private int m_hitPoint = 10;
+        [SerializeField, Range(10, 100)]
+        private int m_score = 10;
         [SerializeField]
         private int m_nway = 3;
         [SerializeField, Range( 0f, 360f)]
@@ -54,8 +56,9 @@ public class EnemyMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
         // Enemy の基本データ
         EnemyData enemyData = new EnemyData()
         {
-            Id = enemyId,
-            HP = m_hitPoint,
+            Id          = enemyId,
+            HP          = m_hitPoint,
+            Score       = m_score
         };
         dstManager.AddComponentData(model, enemyData);
         Translation initPos = new Translation();
@@ -81,7 +84,7 @@ public class EnemyMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
         float frustumHeight = cam.transform.position.y * Mathf.Tan(cam.fieldOfView * 0.5f * Mathf.Deg2Rad);
         float frustumWidth = frustumHeight / Screen.height * Screen.width;
 
-        float maxSize = math.max(frustumHeight, frustumWidth);
+        float maxSize = math.max(frustumHeight*2.0f, frustumWidth*2.0f);
 
         for (int i = 0; i < m_nway; i++)
         {

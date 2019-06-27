@@ -80,7 +80,6 @@ namespace GAME
         public void ReserveDestroyEntity( int _instanceId )
         {
             m_reserveDestroyIdQueue.Enqueue( _instanceId );
-
         }
 
         // OnUpdate runs on the main thread.

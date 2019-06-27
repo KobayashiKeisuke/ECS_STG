@@ -43,6 +43,9 @@ namespace GAME.UI
             uiSystem.Initialize( m_uiCamera, m_basePrefab, m_stickPrefab);
 
             m_hud.Initialize( GameConst.DEFAULT_LIFE_COUNT );
+
+            var effectSystem = World.Active.GetOrCreateSystem<EffectSystem>();
+            effectSystem.AddScoreEvent( this.AddScore );
         }
 
         public void SetPlayerEntity(Entity _e ){m_playerEntity = _e;}
@@ -55,6 +58,12 @@ namespace GAME.UI
                 m_hud.UpdateLifeText( playerData.Life);
                 m_prevLife = playerData.Life;
             }
+        }
+
+        private void AddScore(int _score)
+        {
+            Debug.LogWarning($"ADD:{_score}");
+            m_hud.AddScore( _score );
         }
     }
 }

@@ -70,7 +70,7 @@ namespace GAME
             }
         }
 
-        private void PlayerCollision( ref PlayerData _playerData, Translation _targetPos, ref Translation _bulletPos, ref RenderBounds _bounds, ref BulletData _bullet )
+        private void PlayerCollision( ref PlayerData _playerData, Translation _targetPos, ref Translation _bulletPos, ref RenderBounds _bounds, ref BulletData _bullet)
         {
             float3 bound = _bounds.Value.Extents;
             if( _bulletPos.Value.x -bound.x <= _targetPos.Value.x && _targetPos.Value.x <= _bulletPos.Value.x +bound.x
@@ -84,7 +84,7 @@ namespace GAME
                 _bullet.IsCollide = true;
             }
         }
-        private void EnemyCollision( ref EnemyData _enemyData, Translation _targetPos, ref Translation _bulletPos, ref RenderBounds _bounds, ref BulletData _bullet )
+        private void EnemyCollision( ref EnemyData _enemyData, Translation _targetPos, ref Translation _bulletPos, ref RenderBounds _bounds, ref BulletData _bullet)
         {
             float3 bound = _bounds.Value.Extents;
             if( _bulletPos.Value.x -bound.x <= _targetPos.Value.x && _targetPos.Value.x <= _bulletPos.Value.x +bound.x
@@ -93,10 +93,10 @@ namespace GAME
             {
                 // バレットを消すように見せかける
                 Debug.Log($"EnemyHit\nRange ({_bulletPos.Value.x -bound.x}, {_bulletPos.Value.x +bound.x})\n({_bulletPos.Value.y -bound.y}, {_bulletPos.Value.y +bound.y})\n({_bulletPos.Value.z -bound.z}, {_bulletPos.Value.z +bound.z})\n");
-                _bulletPos.Value.x = GameConst.SCREEN_WIDTH;
-                _bulletPos.Value.z = GameConst.SCREEN_HEIGHT;
-                _enemyData.HP-= _bullet.Damage;
-                _bullet.IsCollide = true;
+                _bulletPos.Value.x  = GameConst.SCREEN_WIDTH;
+                _bulletPos.Value.z  = GameConst.SCREEN_HEIGHT;
+                _enemyData.HP       -= _bullet.Damage;
+                _bullet.IsCollide   = true;
             }
         }
 

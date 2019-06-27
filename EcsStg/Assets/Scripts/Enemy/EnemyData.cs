@@ -8,5 +8,7 @@ namespace GAME.DATA
         public int Id;
         /// <summary> Hit Point </summary>
         public int HP;
+        /// <summary> Score </summary>
+        public int Score;
     }
 }

@@ -1640,6 +1640,16 @@ PrefabInstance:
       propertyPath: m_buleltSpeed
       value: 0.08
       objectReference: {fileID: 0}
+    - target: {fileID: 140927692470438840, guid: 0f188ad220b3b4e6a877e8f3a2bfca41,
+        type: 3}
+      propertyPath: m_hitPoint
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 140927692470438840, guid: 0f188ad220b3b4e6a877e8f3a2bfca41,
+        type: 3}
+      propertyPath: m_score
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4633739165440829962, guid: 0f188ad220b3b4e6a877e8f3a2bfca41,
         type: 3}
       propertyPath: m_angle
