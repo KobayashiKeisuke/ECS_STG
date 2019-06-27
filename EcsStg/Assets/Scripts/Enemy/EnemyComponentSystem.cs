@@ -90,7 +90,9 @@ namespace GAME
                 int id = m_reserveDestroyIdQueue.Dequeue();
                 if( m_allEnemyList.TryGetValue( id, out Entity e) )
                 {
+                    #if UNITY_EDITOR
                     Debug.LogWarning($"DestroyEntity:{id}, Name:{m_entityManager.GetName(e)}");
+                    #endif
                     m_allEnemyList.Remove( id );
                     m_entityManager.DestroyEntity( e );
                 }
