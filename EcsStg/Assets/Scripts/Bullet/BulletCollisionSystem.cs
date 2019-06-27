@@ -17,14 +17,14 @@ namespace GAME
         private List<EnemyData> enemyDataList = new List<EnemyData>();
         private List<Translation> enemyPosList = new List<Translation>();
 
-        private List<Entity> m_enemies = new List<Entity>();
         private EntityManager m_manager;
+        private EnemyComponentSystem m_enemySys;
 
-        public void AddEnemy( Entity _e){ m_enemies.Add( _e ); }
         public void Initialize( Entity _playerEntity )
         {
             m_playerEntity = _playerEntity;
             m_manager = World.Active.EntityManager;
+            m_enemySys = World.Active.GetOrCreateSystem<EnemyComponentSystem>();
         }
 
         // OnUpdate runs on the main thread.
@@ -32,10 +32,10 @@ namespace GAME
         {
             var Data = m_manager.GetComponentData<PlayerData>( m_playerEntity );
             var PlayerPos = m_manager.GetComponentData<Translation>( m_playerEntity );
-            
+            List<Entity> enemies = m_enemySys.GetCurrentAllEnemies();
             enemyDataList.Clear();
             enemyPosList.Clear();
-            foreach (var e in m_enemies)
+            foreach (var e in enemies )
             {
                 enemyDataList.Add( m_manager.GetComponentData<EnemyData>( e ));
                 enemyPosList.Add( m_manager.GetComponentData<Translation>( e ) );
@@ -66,7 +66,7 @@ namespace GAME
             m_manager.SetComponentData( m_playerEntity, Data );
             for (int i = 0; i < enemyDataList.Count; i++)
             {
-                m_manager.SetComponentData( m_enemies[i], enemyDataList[i] );
+                m_manager.SetComponentData( enemies[i], enemyDataList[i] );
             }
         }
 
@@ -99,5 +99,6 @@ namespace GAME
                 _bullet.IsCollide = true;
             }
         }
+
     }
 }

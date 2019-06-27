@@ -44,10 +44,19 @@ public class EnemyMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
 
     public void Convert( Entity _entity, EntityManager dstManager, GameObjectConversionSystem _conversionSystem )
     {
-        // Enemy の基本データ
         Entity model = dstManager.Instantiate( GameObjectConversionUtility.ConvertGameObjectHierarchy(m_objectModel, World.Active));
-        World.Active.GetOrCreateSystem<BulletCollisionSystem>().AddEnemy( model );
-        EnemyData enemyData = new EnemyData(){ HP = m_hitPoint };
+
+        // Entity 管理に登録
+        EnemyComponentSystem enemySys = World.Active.GetOrCreateSystem<EnemyComponentSystem>();
+        int enemyId = enemySys.GetInstanceId();
+        enemySys.AddEnemyEntity( enemyId, model );
+
+        // Enemy の基本データ
+        EnemyData enemyData = new EnemyData()
+        {
+            Id = enemyId,
+            HP = m_hitPoint,
+        };
         dstManager.AddComponentData(model, enemyData);
         Translation initPos = new Translation();
         initPos.Value = new float3(this.transform.position.x, this.transform.position.y, this.transform.position.z );
@@ -99,6 +108,9 @@ public class EnemyMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
                 bulletFactoryData.BulletListHandler = bulletFactorySys.CreateBulletObject(count, m_bulletModel);
 
                 dstManager.AddComponentData(factoryEntity, bulletFactoryData);
+
+                // Enemy 管理システムにも登録
+                enemySys?.AddBulletFactoryRelation( enemyData.Id, factoryEntity );
             }
         }
     }
