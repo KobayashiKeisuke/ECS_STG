@@ -20,16 +20,29 @@ namespace GAME
         private EntityManager m_manager;
         private EnemyComponentSystem m_enemySys;
 
+        private bool m_isInitialized = false;
+        public void ResetSystem()
+        {
+            m_isInitialized = false;
+            m_manager = null;
+        }
+        
         public void Initialize( Entity _playerEntity )
         {
             m_playerEntity = _playerEntity;
             m_manager = World.Active.EntityManager;
             m_enemySys = World.Active.GetOrCreateSystem<EnemyComponentSystem>();
+
+            m_isInitialized = true;
         }
 
         // OnUpdate runs on the main thread.
         protected override void OnUpdate()
         {
+            if( m_manager == null || !m_isInitialized )
+            {
+                return;
+            }
             var Data = m_manager.GetComponentData<PlayerData>( m_playerEntity );
             var PlayerPos = m_manager.GetComponentData<Translation>( m_playerEntity );
             List<Entity> enemies = m_enemySys.GetCurrentAllEnemies();

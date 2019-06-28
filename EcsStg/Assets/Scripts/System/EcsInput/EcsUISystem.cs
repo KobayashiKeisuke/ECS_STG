@@ -99,6 +99,10 @@ namespace GAME.UI
         EcsUIData m_uiTransData;
 
         float m_posY = 0f;
+
+        private bool m_isInitialized = false;
+        public void ResetSystem(){ m_isInitialized = false;}
+
         #endregion //) ===== MEMBER_VARIABLES =====
 
         //------------------------------------------
@@ -157,6 +161,8 @@ namespace GAME.UI
 
             m_posY = leftBottom.y - 100;
             HideUI();
+
+            m_isInitialized = true;
         }
 
         protected override void OnCreate()
@@ -182,6 +188,10 @@ namespace GAME.UI
         // OnUpdate runs on the main thread.
         protected override JobHandle OnUpdate(JobHandle inputDependencies)
         {
+            if( !m_isInitialized )
+            {
+                return inputDependencies;
+            }
             Translation parentPos = E_Manager.GetComponentData<Translation>( m_uiTransData.Parent );
             Translation childPos = E_Manager.GetComponentData<Translation>( m_uiTransData.Child );
             // RenderBounds parentBounds = E_Manager.GetComponentData<RenderBounds>( m_uiTransData.Parent );

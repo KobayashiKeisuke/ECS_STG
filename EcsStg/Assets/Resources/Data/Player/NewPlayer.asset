@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166df03b1bb1e44cdae3cb2fa16b78e9, type: 3}
+  m_Name: NewPlayer
+  m_EditorClassIdentifier: 
+  m_objectModel: {fileID: 6833733836339509561, guid: 1c3d4d8b6da3a4a85bd279741d722a38,
+    type: 3}
+  m_bulletModel: {fileID: 7235812604947944699, guid: b46d4baeec44c4834adb2b4856e0747e,
+    type: 3}
+  m_defaultPosition: {x: 0, y: 0, z: 0}
+  m_defaultRotation: {x: 0, y: 0, z: 0}
+  m_defaultScale: {x: 1, y: 1, z: 1}
+  m_hitPoint: 1
+  m_bulletDamage: 1
+  m_nway: 1
+  m_angle: 180
+  m_buleltSpeed: 0.5
+  m_spawnCycle: 0.3

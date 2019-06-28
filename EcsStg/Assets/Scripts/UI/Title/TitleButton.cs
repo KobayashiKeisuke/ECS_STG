@@ -42,7 +42,7 @@ namespace GAME.TITLE.UI
                 return;
             }
             m_isClicked = true;
-            SceneManager.LoadScene("IngameScene", LoadSceneMode.Single);
+            SceneManager.LoadScene("NewIngameScene", LoadSceneMode.Single);
         }
         #endregion //) ===== BUTTON_ACTION =====
     }

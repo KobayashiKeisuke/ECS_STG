@@ -26,7 +26,13 @@ namespace GAME
 
         Camera MainCam;
         private EcsUISystem m_uiSystem;
-        
+
+        private bool m_isInitialized = false;
+        public void ResetSystem()
+        {
+            m_isInitialized = false;
+        }
+
         protected override void OnCreate()
         {
             World currentWorld = World.Active;
@@ -38,13 +44,16 @@ namespace GAME
         {
             MainCam = _cam;
             Debug.Assert( MainCam != null );
+            m_isInitialized = true;
         }
         // OnUpdate runs on the main thread.
         protected override void OnUpdate()
         {
-            // float3 currentPos = MainCam.transform.position;
-            // float3 normalizedRightVec      = MainCam.transform.right.normalized;
-            // float3 normalizedUpVec         = MainCam.transform.up.normalized;
+            if( !m_isInitialized )
+            {
+                return;
+            }
+            
             float3 normalizedForwardVec    = MainCam.transform.forward.normalized;
 
             float angle = m_uiSystem.UiData.Angle;

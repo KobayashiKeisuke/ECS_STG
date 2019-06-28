@@ -14,6 +14,8 @@ public class PlayerMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
     private GameObject m_bulletObjectPrefab = null;
     [SerializeField, Range(0.1f, 5.0f)]
     private float m_spawnCycle = 1.0f;
+    [SerializeField, Range(1, 100)]
+    private int m_life = GameConst.DEFAULT_LIFE_COUNT;
 
     public void Convert( Entity _entity, EntityManager dstManager, GameObjectConversionSystem _conversionSystem )
     {
@@ -28,7 +30,7 @@ public class PlayerMonoBehaviour : MonoBehaviour, IConvertGameObjectToEntity
 
         var playerData = new PlayerData()
         {
-            Life = GameConst.DEFAULT_LIFE_COUNT,
+            Life = m_life,
             PrevScreenPos = new float2( Screen.width * 0.5f, Screen.height * 0.5f),
         };
         var bulletFactoryData = new BulletFactoryData()

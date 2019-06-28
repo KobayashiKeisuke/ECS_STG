@@ -25,6 +25,7 @@ namespace GAME
         {
             var sys = World.Active.GetOrCreateSystem<EffectSystem>();
             sys.AddDeadEvent( this.OnEmitExplosionEffect );
+            sys.AddGameOverEvent( this.OnEmitExplosionEffect );
         }
 
         #endregion //) ===== INITIALIZE =====
